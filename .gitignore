@@ -117,5 +117,7 @@ compile_commands.json
 *.cxxflags
 *.cflags
 
+# KDE files
+.directory
 
 # End of https://www.toptal.com/developers/gitignore/api/c++,qtcreator,qt,qml

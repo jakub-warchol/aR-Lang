@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>gui/GuiStyle.qml</file>
+        <file>gui/components/menu/AppMenuBar.qml</file>
+        <file>gui/components/menu/AppMenu.qml</file>
+        <file>gui/components/toolbar/AppToolbar.qml</file>
+        <file>gui/components/toolbar/AppToolButton.qml</file>
+        <file>gui/window_content/AppWindowContent.qml</file>
+        <file>gui/window_content/WindowSidebar.qml</file>
+        <file>gui/components/text/AppTextField.qml</file>
+    </qresource>
+</RCC>

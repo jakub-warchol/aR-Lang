@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>resources/icons/add.png</file>
+        <file>resources/icons/bin.png</file>
+        <file>resources/icons/duplicate.png</file>
+        <file>resources/icons/play.png</file>
+    </qresource>
+</RCC>
