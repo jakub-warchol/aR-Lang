@@ -9,5 +9,10 @@
         <file>gui/window_content/AppWindowContent.qml</file>
         <file>gui/window_content/WindowSidebar.qml</file>
         <file>gui/components/text/AppTextField.qml</file>
+        <file>gui/window_content/Scope.qml</file>
+        <file>gui/components/blocks/ScopeBlock.qml</file>
+        <file>gui/components/blocks/IOShape/TriangleShape.qml</file>
+        <file>gui/components/blocks/IOShape/BlockOut.qml</file>
+        <file>gui/components/blocks/IOShape/BlocksIn.qml</file>
     </qresource>
 </RCC>

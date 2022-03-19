@@ -13,7 +13,7 @@ Rectangle {
         anchors.fill: parent
         spacing: 1
 
-        Rectangle {
+        Scope {
             Layout.fillHeight: true
             Layout.fillWidth: true
             color: GuiStyle.color3

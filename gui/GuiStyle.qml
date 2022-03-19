@@ -9,4 +9,5 @@ QtObject {
     readonly property color color4: "#d6d6d6"   ///< Spacebar
     readonly property color color5: "#ffffff"   ///< TextField
     readonly property color color6: "#c0c0c0"   ///< Placeholder
+    readonly property color color7: "#75a9f9"   ///< Selected
 }
