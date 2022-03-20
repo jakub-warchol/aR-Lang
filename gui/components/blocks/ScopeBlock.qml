@@ -39,11 +39,31 @@ Rectangle {
     }
 
     BlockOut {
+        id: blockOut
         x: root.width
         y: (root.height - height) * 0.5
         width: 10
         height: width
         canMove: true
+
+        onAttachedToTargetBlock: {
+            line.destination = target
+//            line.endX = line.mapFromItem(blockOut, blockOut.x, blockOut.y).x
+//            line.endY = line.mapFromItem(blockOut, blockOut.x, blockOut.y).y
+
+        }
+    }
+
+    //TODO: during adding new ScopeBlock, add ConnectionLine to a vector
+    ConnectionLine {
+        id: line
+        lineWidth: 2
+        lineColor: blockOut.isInDropArea ? GuiStyle.color7 : "black"
+        source: root
+        startX: root.width
+        startY: root.height * 0.5
+        endX: blockOut.x
+        endY: blockOut.y + blockOut.height * 0.5
     }
 
     MouseArea {

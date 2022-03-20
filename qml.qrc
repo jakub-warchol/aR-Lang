@@ -14,5 +14,6 @@
         <file>gui/components/blocks/IOShape/TriangleShape.qml</file>
         <file>gui/components/blocks/IOShape/BlockOut.qml</file>
         <file>gui/components/blocks/IOShape/BlocksIn.qml</file>
+        <file>gui/components/blocks/IOShape/ConnectionLine.qml</file>
     </qresource>
 </RCC>

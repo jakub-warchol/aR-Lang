@@ -21,6 +21,7 @@ Item {
             DropArea {
                 anchors.fill: parent
                 enabled: true
+                keys: "connect_blocks"
 
                 Rectangle {
                     anchors.fill: parent
@@ -29,7 +30,8 @@ Item {
                 }
 
                 onDropped: {
-                    console.log(drop.source)
+                    const blockOut = drag.source as BlockOut
+                    blockOut.attachToTarget(parent.parent.parent)
                 }
             }
         }

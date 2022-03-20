@@ -8,9 +8,21 @@ import "qrc:/"
 TriangleShape {
     id: root
     property alias dragActive: dragArea.drag.active
+    property bool isInDropArea: Drag.target !== null
+
+    signal attachedToTargetBlock(var target)
+
+    function attachToTarget(target) {
+        console.log(target.parent)
+        console.log(target.x, target.y, x, y, mapFromItem(target.parent, target.x, target.y))
+        root.x = Qt.binding(() => target.x)//mapToItem(parent, target.x, target.y).x)
+        root.y = Qt.binding(() => target.y)//mapToItem(parent, target.x, target.y).y)
+        root.attachedToTargetBlock(target)
+    }
 
     Drag.active: dragArea.drag.active
     Drag.dragType: Drag.Automatic
+    Drag.keys: "connect_blocks"
 
     onDragActiveChanged: {
         if(dragActive) {
