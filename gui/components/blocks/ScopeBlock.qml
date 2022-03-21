@@ -14,6 +14,8 @@ Rectangle {
 
     property alias value: valueLbl.text
     property alias readOnly: valueLbl.readOnly
+    property alias inputCount: blocksIn.inputCount
+    property alias hasOutput: blockOut.visible
     property int minimumXDrag: 0
     property int maximumXDrag: 0
     property int minimumYDrag: 0
@@ -23,10 +25,10 @@ Rectangle {
 
     //TODO: add line by drag from BlockOut and drop in BlockIn
     BlocksIn {
+        id: blocksIn
         width: 10
         height: parent.height
         anchors.left: parent.left
-        inputCount: 2
     }
 
     AppTextField {
@@ -36,6 +38,7 @@ Rectangle {
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignHCenter
         bgColor: "transparent"
+        inputMethodHints: Qt.ImhDigitsOnly
     }
 
     BlockOut {
@@ -45,13 +48,6 @@ Rectangle {
         width: 10
         height: width
         canMove: true
-
-        onAttachedToTargetBlock: {
-            line.destination = target
-//            line.endX = line.mapFromItem(blockOut, blockOut.x, blockOut.y).x
-//            line.endY = line.mapFromItem(blockOut, blockOut.x, blockOut.y).y
-
-        }
     }
 
     //TODO: during adding new ScopeBlock, add ConnectionLine to a vector
@@ -59,7 +55,6 @@ Rectangle {
         id: line
         lineWidth: 2
         lineColor: blockOut.isInDropArea ? GuiStyle.color7 : "black"
-        source: root
         startX: root.width
         startY: root.height * 0.5
         endX: blockOut.x

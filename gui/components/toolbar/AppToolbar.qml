@@ -43,6 +43,7 @@ ToolBar {
         AppToolButton {
             icon.source: "qrc:/resources/icons/play.png"
             onClicked: {
+                guiEngine.startCalculation()
             }
         }
     }

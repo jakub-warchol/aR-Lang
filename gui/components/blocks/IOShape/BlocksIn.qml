@@ -12,8 +12,8 @@ Item {
     Repeater {
         id: blocks
         delegate: TriangleShape {
-            x: root.x - 2
-            y: root.y + root.height * index / (blocks.count - 1) - height * index
+            x: root.x - width * 0.5
+            y: blocks.count === 1 ? (root.height - height) * 0.5 :root.y + root.height * index / (blocks.count - 1) - height * index
             width: root.width
             height: width
             fillColor: "transparent"

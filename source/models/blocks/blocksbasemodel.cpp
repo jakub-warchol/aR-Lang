@@ -62,6 +62,16 @@ QHash<int, QByteArray> BlocksBaseModel::roleNames() const
     return roles;
 }
 
+QList<CalculationBlock>::const_iterator BlocksBaseModel::cbegin() const
+{
+    return m_blocks.cbegin();
+}
+
+QList<CalculationBlock>::const_iterator BlocksBaseModel::cend() const
+{
+    return m_blocks.cend();
+}
+
 void BlocksBaseModel::addBlock(const int type)
 {
     CalculationBlock block{static_cast<CalculationBlock::Type>(type)};

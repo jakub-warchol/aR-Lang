@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.12
 import GuiStyle 1.0
 
 import "qrc:/gui/components/text/"
+import "qrc:/gui/components/errors/"
 
 Item {
     id: root
@@ -19,7 +20,20 @@ Item {
             Layout.maximumHeight: 40
             placeholderText: qsTr("Result:")
             verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
             readOnly: true
+
+            Connections {
+                target: guiEngine
+
+                function onCalculationStarted() {
+                    resultTf.clear()
+                }
+
+                function onCalculationSucceeded(result) {
+                    resultTf.text = result
+                }
+            }
         }
 
         Rectangle {
@@ -41,6 +55,11 @@ Item {
             Layout.fillWidth: true
             Layout.fillHeight: true
             color: GuiStyle.color5
+
+            ErrorsList {
+                anchors.fill: parent
+                errorsModel: guiEngine.errorsModel
+            }
         }
     }
 }

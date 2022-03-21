@@ -10,8 +10,6 @@ Shape {
     property alias lineColor: path.strokeColor
     property alias startX: path.startX
     property alias startY: path.startY
-    property var source: null
-    property var destination: null
     property int endX: 0
     property int endY: 0
 

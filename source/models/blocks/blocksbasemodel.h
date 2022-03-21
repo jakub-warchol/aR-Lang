@@ -24,6 +24,9 @@ public:
     virtual bool setData(const QModelIndex &index, const QVariant &value, int role) override;
     virtual QHash<int, QByteArray> roleNames() const override;
 
+    QList<CalculationBlock>::const_iterator cbegin() const;
+    QList<CalculationBlock>::const_iterator cend() const;
+
     void addBlock(const int type);
     void addBlock(const CalculationBlock &block);
 

@@ -27,6 +27,8 @@ Rectangle {
             maximumYDrag: root.height - height
             value: model.value
             readOnly: !model.canModified
+            inputCount: model.isDestination ? model.inputCount : 0
+            hasOutput: model.isSource
 
             Component.onCompleted: {
                 scopeDelegate.x = root.width * model.x
@@ -43,6 +45,12 @@ Rectangle {
             onYChanged: {
                 if(scopeDelegate.initialized) {
                     model.y = Number(y / (root.height * 1.)).toFixed(2)
+                }
+            }
+
+            onValueChanged: {
+                if(scopeDelegate.initialized) {
+                    model.value = value
                 }
             }
 
