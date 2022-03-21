@@ -12,6 +12,7 @@ Item {
     Repeater {
         id: blocks
         delegate: TriangleShape {
+            property bool connectedToBlock: false
             x: root.x - width * 0.5
             y: blocks.count === 1 ? (root.height - height) * 0.5 :root.y + root.height * index / (blocks.count - 1) - height * index
             width: root.width
@@ -20,7 +21,7 @@ Item {
 
             DropArea {
                 anchors.fill: parent
-                enabled: true
+                enabled: !parent.connectedToBlock
                 keys: "connect_blocks"
 
                 Rectangle {
@@ -31,7 +32,14 @@ Item {
 
                 onDropped: {
                     const blockOut = drag.source as BlockOut
-                    blockOut.attachToTarget(parent.parent.parent)
+                    if(blockOut.parent === parent.parent.parent) { // block connection to yourself
+                        console.error("connect to yourself")
+                        drop.accepted = false
+                        return
+                    }
+
+                    blockOut.attachToTarget(parent)
+                    parent.connectedToBlock = true
                 }
             }
         }

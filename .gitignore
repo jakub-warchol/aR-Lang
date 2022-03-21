@@ -117,6 +117,10 @@ compile_commands.json
 *.cxxflags
 *.cflags
 
+# QML orig
+*.qml.orig
+*.qml.Orig
+
 # KDE files
 .directory
 

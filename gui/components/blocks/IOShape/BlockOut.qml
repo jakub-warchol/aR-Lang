@@ -9,15 +9,13 @@ TriangleShape {
     id: root
     property alias dragActive: dragArea.drag.active
     property bool isInDropArea: Drag.target !== null
-
-    signal attachedToTargetBlock(var target)
+    property var targetInput: null
 
     function attachToTarget(target) {
-        console.log(target.parent)
-        console.log(target.x, target.y, x, y, mapFromItem(target.parent, target.x, target.y))
-        root.x = Qt.binding(() => target.x)//mapToItem(parent, target.x, target.y).x)
-        root.y = Qt.binding(() => target.y)//mapToItem(parent, target.x, target.y).y)
-        root.attachedToTargetBlock(target)
+        root.x = parent.mapFromItem(target.parent, target.x, target.y).x
+        root.y = parent.mapFromItem(target.parent, target.x, target.y).y
+        root.targetInput = target
+        root.canMove = false
     }
 
     Drag.active: dragArea.drag.active
@@ -28,8 +26,8 @@ TriangleShape {
         if(dragActive) {
             inner.savePosition()
             Drag.start()
-        } else {
-            if(Drag.target !== null) {
+        } else {            
+            if(Drag.target !== null && Drag.target.parent.parent.parent !== root.parent) { // block connection to yourself
                 Drag.drop()
             } else {
                 Drag.cancel()
@@ -52,6 +50,31 @@ TriangleShape {
             lastX = root.x
             lastY = root.y
         }
+
+        function changeX() {
+            if(root.targetInput !== null) {
+                root.x = root.parent.mapFromItem(root.targetInput.parent, root.targetInput.x, root.targetInput.y).x
+            }
+        }
+
+        function changeY() {
+            if(root.targetInput !== null) {
+                root.y = root.parent.mapFromItem(root.targetInput.parent, root.targetInput.x, root.targetInput.y).y
+            }
+        }
+    }
+
+    Connections {
+        target: root.targetInput !== null ? root.targetInput.parent.parent : null
+        enabled: root.targetInput !== null
+
+        function onXChanged() {
+            inner.changeX()
+        }
+
+        function onYChanged() {
+            inner.changeY()
+        }
     }
 
     MouseArea {
@@ -62,7 +85,7 @@ TriangleShape {
     }
 
     states: State {
-        name: "detach_parent"
+        name: "drag_active"
         when: dragArea.drag.active
 
         PropertyChanges {
