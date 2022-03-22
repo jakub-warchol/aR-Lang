@@ -2,6 +2,7 @@
 #define CALCULATIONBLOCK_H
 
 #include <QString>
+#include <QVector>
 
 class CalculationBlock
 {
@@ -41,6 +42,11 @@ public:
     qreal yPos() const;
     void setYPos(const qreal &yPos);
 
+    int sourceBlockAt(const int inputIdx) const;
+    void setSourceBlockAt(const int inputIdx, const int sourceBlockIdx);
+
+    int inputOfSource(const int sourceBlockIdx) const;
+
 private:
     Type m_type;
     QString m_value;
@@ -49,6 +55,7 @@ private:
     int m_inputCount;
     qreal m_xPos;
     qreal m_yPos;
+    QVector<int> m_sourceBlocksIdx;
 };
 
 #endif // CALCULATIONBLOCK_H

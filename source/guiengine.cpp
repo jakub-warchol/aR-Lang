@@ -1,7 +1,9 @@
 #include "guiengine.h"
 #include "source/calculations/calculationengine.h"
+#include "source/expression/expressiongenerator.h"
 
 #include <QApplication>
+#include <QDebug>
 
 /*!
  * \brief GuiEngine::GuiEngine
@@ -12,7 +14,8 @@ GuiEngine::GuiEngine(QObject *parent) : QObject(parent)
 {
     m_blocksModel = new BlocksModel(this);
     m_errorsModel = new ErrorModel(this);
-    m_calculationEngine = new CalculationEngine(this);
+    m_calculationEngine   = new CalculationEngine(this);
+    m_expressionGenerator = new ExpressionGenerator(m_blocksModel, this);
 
     connect(this, &GuiEngine::calculationStarted, m_errorsModel, &ErrorModel::clearErrors);
     connect(this, &GuiEngine::calculationError, m_errorsModel, &ErrorModel::addError);
@@ -75,13 +78,15 @@ void GuiEngine::startCalculation()
     // start creating expression
     // there is no need to check if resultIt is valid (we've checked it previously)
     auto resultIt = std::find_if(m_blocksModel->cbegin(), m_blocksModel->cend(), getResultBlock);
-    auto expression = prepareCalculationExpression(*resultIt);
-    if(expression.isEmpty()) {
-        emit calculationError(tr("Generated equation is empty"));
-        return;
+    auto expressionGenerated = m_expressionGenerator->generateExpression(*resultIt);
+    if(expressionGenerated) { // if there weren't any errors during expression generating, start parsing
+        auto expression = m_expressionGenerator->generatedExpression();
+        m_calculationEngine->parseCalculationExpression(expression);
+    } else { // otherwise, notify about errors
+        auto generatedError = m_expressionGenerator->errorString();
+        emit calculationError(tr("Parsing failed"));
+        emit calculationError(generatedError);
     }
-
-    m_calculationEngine->parseCalculationExpression(expression);
 }
 
 /*!
@@ -102,17 +107,4 @@ void GuiEngine::loadFromFile(const QString filePath)
 void GuiEngine::saveToFile(const QString filePath)
 {
 
-}
-
-/*!
- * \brief GuiEngine::prepareCalculationExpression
- * Prepare expression from blocks that joined in given <i>resultBlock</i>
- * \param resultBlock
- * \return
- */
-QString GuiEngine::prepareCalculationExpression(const CalculationBlock &resultBlock)
-{
-    QString expr;
-
-    return expr;
 }

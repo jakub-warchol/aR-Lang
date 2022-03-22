@@ -1,10 +1,12 @@
 QT += core quick widgets
 
 CONFIG += c++17
+CONFIG(release, debug|release):DEFINES += QT_NO_DEBUG_OUTPUT
 
 SOURCES += \
         main.cpp \
         source/calculations/calculationengine.cpp \
+        source/expression/expressiongenerator.cpp \
         source/guiengine.cpp \
         source/models/blocks/addblocksmodel.cpp \
         source/models/blocks/blocksbasemodel.cpp \
@@ -17,6 +19,7 @@ RESOURCES += qml.qrc \
 
 HEADERS += \
     source/calculations/calculationengine.h \
+    source/expression/expressiongenerator.h \
     source/guiengine.h \
     source/models/blocks/addblocksmodel.h \
     source/models/blocks/blocksbasemodel.h \

@@ -7,6 +7,7 @@
 #include "models/errors/errormodel.h"
 
 class CalculationEngine;
+class ExpressionGenerator;
 /*!
  * \brief The GuiEngine class
  * Provide a bridge to communication between C++ and QML.
@@ -34,13 +35,11 @@ signals:
     void calculationError(const QString reason);    ///< notify that <i>error</i> occured during parsing
 
 private:
-    QString prepareCalculationExpression(const CalculationBlock &resultBlock);
+    BlocksModel* m_blocksModel;                     ///< Instance of BlocksModel on the Scope
+    ErrorModel* m_errorsModel;                      ///< Intance of ErrorModel
 
-private:
-    BlocksModel* m_blocksModel;             ///< Instance of BlocksModel on the Scope
-    ErrorModel* m_errorsModel;              ///< Intance of ErrorModel
-
-    CalculationEngine* m_calculationEngine; ///< Instance of CalculationEngine
+    CalculationEngine* m_calculationEngine;         ///< Instance of CalculationEngine
+    ExpressionGenerator* m_expressionGenerator;     ///< Instance of ExpressionGenerator
 };
 
 #endif // GUIENGINE_H

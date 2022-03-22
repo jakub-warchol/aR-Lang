@@ -29,6 +29,7 @@ public:
 
     void addBlock(const int type);
     void addBlock(const CalculationBlock &block);
+    CalculationBlock* blockAt(const int blockIdx);
 
 protected:
     virtual bool canModifyValue(const CalculationBlock &block) const;

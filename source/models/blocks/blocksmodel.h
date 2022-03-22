@@ -20,6 +20,8 @@ public:
     virtual QHash<int, QByteArray> roleNames() const override;
 
     Q_INVOKABLE void addBlock(const int type, qreal xPos, qreal yPos);
+    Q_INVOKABLE void attachBlocks(const int sourceBlockIdx, const int targetBlockIdx, const int inputIdx);
+    Q_INVOKABLE void detachBlocks(const int sourceBlockIdx, const int targetBlockIdx, const int inuptIdx);
 
 protected:
     virtual bool canModifyValue(const CalculationBlock &block) const override;

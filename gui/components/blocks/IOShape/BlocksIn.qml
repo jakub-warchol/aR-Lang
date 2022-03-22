@@ -8,6 +8,7 @@ import "qrc:/"
 Item {
     id: root
     property alias inputCount: blocks.model
+    signal blockAttached(int blockIdx, int inputIdx)
 
     Repeater {
         id: blocks
@@ -40,6 +41,7 @@ Item {
 
                     blockOut.attachToTarget(parent)
                     parent.connectedToBlock = true
+                    root.blockAttached(blockOut.parent.blockIdx, index)
                 }
             }
         }

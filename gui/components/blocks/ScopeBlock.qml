@@ -16,6 +16,7 @@ Rectangle {
     property alias readOnly: valueLbl.readOnly
     property alias inputCount: blocksIn.inputCount
     property alias hasOutput: blockOut.visible
+    property int blockIdx: -1
     property int minimumXDrag: 0
     property int maximumXDrag: 0
     property int minimumYDrag: 0
@@ -29,6 +30,10 @@ Rectangle {
         width: 10
         height: parent.height
         anchors.left: parent.left
+
+        onBlockAttached: {
+            guiEngine.blocksModel.attachBlocks(blockIdx, root.blockIdx, inputIdx)
+        }
     }
 
     AppTextField {

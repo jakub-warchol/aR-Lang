@@ -85,6 +85,11 @@ void BlocksBaseModel::addBlock(const CalculationBlock &block)
     endInsertRows();
 }
 
+CalculationBlock *BlocksBaseModel::blockAt(const int blockIdx)
+{
+    return &m_blocks[blockIdx];
+}
+
 bool BlocksBaseModel::canModifyValue(const CalculationBlock &block) const
 {
     return false;

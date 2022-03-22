@@ -25,6 +25,7 @@ Rectangle {
             maximumXDrag: root.width - width
             minimumYDrag: 0
             maximumYDrag: root.height - height
+            blockIdx: index
             value: model.value
             readOnly: !model.canModified
             inputCount: model.isDestination ? model.inputCount : 0

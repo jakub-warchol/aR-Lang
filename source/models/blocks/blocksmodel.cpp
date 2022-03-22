@@ -2,10 +2,15 @@
 
 BlocksModel::BlocksModel(QObject *parent) : BlocksBaseModel(parent)
 {
-    addBlock(CalculationBlock::Number, 0.1, 0.1);
-    addBlock(CalculationBlock::Number, 0.1, 0.2);
-    addBlock(CalculationBlock::Add, 0.15, 0.15);
-    addBlock(CalculationBlock::Result, 0.3, 0.15);
+    addBlock(CalculationBlock::Number, 0.02, 0.03);
+    addBlock(CalculationBlock::Number, 0.01, 0.31);
+    addBlock(CalculationBlock::Number, 0.29, 0.67);
+    addBlock(CalculationBlock::Add, 0.17, 0.14);
+    addBlock(CalculationBlock::Multiplication, 0.4, 0.35);
+    addBlock(CalculationBlock::Result, 0.66, 0.35);
+    addBlock(CalculationBlock::Multiplication, 0.53, 0.35);
+    addBlock(CalculationBlock::Number, 0.52, 0.25);
+    addBlock(CalculationBlock::Number, 0.51, 0.28);
 }
 
 QVariant BlocksModel::data(const QModelIndex &index, int role) const
@@ -61,6 +66,21 @@ void BlocksModel::addBlock(const int type, qreal xPos, qreal yPos)
 {
     CalculationBlock block{static_cast<CalculationBlock::Type>(type), xPos, yPos};
     BlocksBaseModel::addBlock(block);
+}
+
+void BlocksModel::attachBlocks(const int sourceBlockIdx, const int targetBlockIdx, const int inputIdx)
+{
+    if(targetBlockIdx >= 0 && targetBlockIdx < m_blocks.size()) {
+        auto& targetBlock = m_blocks[targetBlockIdx];
+        if(inputIdx < targetBlock.inputCount()) {
+            targetBlock.setSourceBlockAt(inputIdx, sourceBlockIdx);
+        }
+    }
+}
+
+void BlocksModel::detachBlocks(const int sourceBlockIdx, const int targetBlockIdx, const int inuptIdx)
+{
+
 }
 
 bool BlocksModel::canModifyValue(const CalculationBlock &block) const

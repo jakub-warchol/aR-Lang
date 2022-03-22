@@ -1,6 +1,7 @@
 #include "calculationblock.h"
 
 #include <QMap>
+#include <QDebug>
 
 static QMap<CalculationBlock::Type, QString> valueMapper = {
     {CalculationBlock::Number, QStringLiteral("0")},
@@ -31,6 +32,9 @@ CalculationBlock::CalculationBlock(CalculationBlock::Type type, qreal x, qreal y
     } else {
         m_inputCount = 2;
     }
+
+    m_sourceBlocksIdx.resize(m_inputCount);
+    m_sourceBlocksIdx.fill(-1);
 }
 
 CalculationBlock::Type CalculationBlock::type() const
@@ -101,4 +105,20 @@ qreal CalculationBlock::yPos() const
 void CalculationBlock::setYPos(const qreal &yPos)
 {
     m_yPos = yPos;
+}
+
+int CalculationBlock::sourceBlockAt(const int inputIdx) const
+{
+    return m_sourceBlocksIdx.at(inputIdx);
+}
+
+void CalculationBlock::setSourceBlockAt(const int inputIdx, const int sourceBlockIdx)
+{
+    m_sourceBlocksIdx[inputIdx] = sourceBlockIdx;
+}
+
+int CalculationBlock::inputOfSource(const int sourceBlockIdx) const
+{
+    auto it = std::find(m_sourceBlocksIdx.cbegin(), m_sourceBlocksIdx.cend(), sourceBlockIdx);
+    return it != m_sourceBlocksIdx.cend() ? *it : -1;
 }
