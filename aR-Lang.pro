@@ -12,6 +12,8 @@ SOURCES += \
         source/models/blocks/blocksbasemodel.cpp \
         source/models/blocks/blocksmodel.cpp \
         source/models/blocks/calculationblock.cpp \
+        source/models/blocks/selectedblocksmodel.cpp \
+        source/models/connection_lines/connectionlinesmodel.cpp \
         source/models/errors/errormodel.cpp
 
 RESOURCES += qml.qrc \
@@ -25,4 +27,6 @@ HEADERS += \
     source/models/blocks/blocksbasemodel.h \
     source/models/blocks/blocksmodel.h \
     source/models/blocks/calculationblock.h \
+    source/models/blocks/selectedblocksmodel.h \
+    source/models/connection_lines/connectionlinesmodel.h \
     source/models/errors/errormodel.h

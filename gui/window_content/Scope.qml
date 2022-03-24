@@ -9,6 +9,16 @@ import "qrc:/gui/components/blocks"
 Rectangle {
     id: root
 
+    MouseArea {
+        anchors.fill: parent
+        propagateComposedEvents: true
+
+        onClicked: {
+            forceActiveFocus()
+            // TODO: deselect all
+        }
+    }
+
     Repeater {
         anchors.fill: parent
         model: guiEngine.blocksModel
@@ -35,6 +45,12 @@ Rectangle {
                 scopeDelegate.x = root.width * model.x
                 scopeDelegate.y = root.height * model.y
                 scopeDelegate.initialized = true
+
+                scopeDelegate.addLineToModel()
+            }
+
+            Component.onDestruction: {
+                scopeDelegate.removeLineFromModel()
             }
 
             onXChanged: {
@@ -53,6 +69,10 @@ Rectangle {
                 if(scopeDelegate.initialized) {
                     model.value = value
                 }
+            }
+
+            onSelectedChanged: {
+                model.selected = !model.selected
             }
 
             Connections {

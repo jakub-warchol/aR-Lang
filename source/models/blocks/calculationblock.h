@@ -20,6 +20,7 @@ public:
 
     explicit CalculationBlock(Type type, qreal x = 0., qreal y = 0.);
     explicit CalculationBlock(Type type, qreal x, qreal y, const QString &value);
+    explicit CalculationBlock(const CalculationBlock &other);
 
     Type type() const;
     void setType(const Type &type);
@@ -45,6 +46,9 @@ public:
     int sourceBlockAt(const int inputIdx) const;
     void setSourceBlockAt(const int inputIdx, const int sourceBlockIdx);
 
+    bool selected() const;
+    void setSelected(bool selected);
+
     int inputOfSource(const int sourceBlockIdx) const;
 
 private:
@@ -56,6 +60,7 @@ private:
     qreal m_xPos;
     qreal m_yPos;
     QVector<int> m_sourceBlocksIdx;
+    bool m_selected;
 };
 
 #endif // CALCULATIONBLOCK_H

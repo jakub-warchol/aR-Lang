@@ -16,15 +16,21 @@ Rectangle {
     property alias readOnly: valueLbl.readOnly
     property alias inputCount: blocksIn.inputCount
     property alias hasOutput: blockOut.visible
+    property bool selected: false
     property int blockIdx: -1
     property int minimumXDrag: 0
     property int maximumXDrag: 0
     property int minimumYDrag: 0
     property int maximumYDrag: 0
 
-    signal clicked()
+    function addLineToModel() {
+        guiEngine.connectionLinesModel.addLine(line)
+    }
 
-    //TODO: add line by drag from BlockOut and drop in BlockIn
+    function removeLineFromModel() {
+        guiEngine.connectionLinesModel.removeLine(line)
+    }
+
     BlocksIn {
         id: blocksIn
         width: 10
@@ -53,17 +59,27 @@ Rectangle {
         width: 10
         height: width
         canMove: true
+
+        onLineSelected: {
+            line.selected = !line.selected
+            guiEngine.connectionLinesModel.toggleLineSelectionStatus(line)
+        }
     }
 
-    //TODO: during adding new ScopeBlock, add ConnectionLine to a vector
     ConnectionLine {
         id: line
         lineWidth: 2
         lineColor: blockOut.isInDropArea ? GuiStyle.color7 : "black"
+        selectedLineColor: GuiStyle.color7
         startX: root.width
         startY: root.height * 0.5
         endX: blockOut.x
         endY: blockOut.y + blockOut.height * 0.5
+
+        onLineRemoved: {
+            line.selected = !line.selected
+            blockOut.detachFromTarget()
+        }
     }
 
     MouseArea {
@@ -77,11 +93,26 @@ Rectangle {
 
         onClicked: {
             forceActiveFocus()
-            root.clicked()
+            root.selected = !root.selected
         }
 
         onDoubleClicked: {
             valueLbl.focus = true
+        }
+    }
+
+    states: State {
+        name: "selected"
+        when: root.selected
+
+        PropertyChanges {
+            target: root
+            border.color: GuiStyle.color7
+        }
+
+        PropertyChanges {
+            target: valueLbl
+            color: GuiStyle.color7
         }
     }
 }

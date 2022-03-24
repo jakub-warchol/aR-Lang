@@ -12,16 +12,25 @@ Shape {
     property alias startY: path.startY
     property int endX: 0
     property int endY: 0
+    property bool selected: false
+    property color selectedLineColor: "black"
 
-    function resetPath() {
-        path.pathElements = []
-    }
-
+    signal lineRemoved()
     containsMode: Shape.FillContains
 
     ShapePath {
         id: path
         fillColor: "transparent"
         PathLine{x: root.endX; y: root.endY}
+    }
+
+    states: State {
+        name: "line_selected"
+        when: root.selected
+
+        PropertyChanges {
+            target: path
+            strokeColor: root.selectedLineColor
+        }
     }
 }

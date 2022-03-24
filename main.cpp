@@ -1,4 +1,5 @@
 #include <QApplication>
+#include <QSurfaceFormat>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 
@@ -12,6 +13,11 @@ int main(int argc, char *argv[])
 
     QApplication app(argc, argv);
     QScopedPointer<GuiEngine> guiEngine{new GuiEngine};
+
+    // set supersampling
+    QSurfaceFormat supersamplingFormat;
+    supersamplingFormat.setSamples(8);
+    QSurfaceFormat::setDefaultFormat(supersamplingFormat);
 
     QQmlApplicationEngine engine;
     qmlRegisterSingletonType(QUrl(QStringLiteral("qrc:/gui/GuiStyle.qml")), "GuiStyle", 1, 0, "GuiStyle");

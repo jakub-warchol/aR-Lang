@@ -1,6 +1,8 @@
 #include "calculationengine.h"
 
-int wagaOperatora(QChar input){
+#include <QtMath>
+
+static int wagaOperatora(QChar input){
     int waga = 0;
 
     switch (input.toLatin1()){
@@ -28,7 +30,7 @@ int wagaOperatora(QChar input){
     return waga;
 }
 
-double operation(double a, double b, QChar op){
+static double operation(double a, double b, QChar op){
     //Perform operation
     if(op == '+')
         return a + b;
@@ -39,7 +41,7 @@ double operation(double a, double b, QChar op){
     else if(op == '/')
         return a / b;
     else if(op == '^')
-        return pow(a,b); //find b^a
+        return qPow(a,b); //find b^a
     else
         return INT_MIN; //return negative infinity
 }
@@ -59,19 +61,14 @@ CalculationEngine::CalculationEngine(QObject *parent) : QObject(parent)
  */
 void CalculationEngine::parseCalculationExpression(const QString &expression)
 {
-    //QString input = "-42+-2*3.3^-2.1*52.89^2*-4-8^-3/-2+4+7.27--11*-1.2";
     QString input = expression;
-
     input.replace(",",".");
-
-    //qDebug() << input;
 
     QString stos;
     QString symbole;
     QChar lastSymbol;
 
     for (QChar symbol : input){
-
         if ((symbol.isDigit() || symbol == '.') || (symbol == '-' && !lastSymbol.isDigit())){
             stos.append(symbol);
         }else{
@@ -80,9 +77,7 @@ void CalculationEngine::parseCalculationExpression(const QString &expression)
                 symbole.append(symbol);
             }else{
 
-                //if (wagaOperatora(symbol) wagaOperatora(stos))
                 while (true){
-                    //qDebug() << stos;
                     if (symbol == '^'){ //prawostronna operacja
                         if (wagaOperatora(symbol) < wagaOperatora(symbole.back())){
                             stos.append(symbole.back());
@@ -119,19 +114,16 @@ void CalculationEngine::parseCalculationExpression(const QString &expression)
         stos += ' ' + symbol;
     }
 
-    //qDebug() << stos;
-
     QString number;
     QList<double> stk;
     stos += ' ';
 
-    for (QChar symbol : stos) {
+    for (QChar symbol : qAsConst(stos)) {
         if (symbol != ' '){
             number += symbol;
         }else{
             if (number.length()>1 || number[0].isDigit()){
                 stk.append(number.toDouble());
-                //qDebug() << number;
             }else{
                 double a = stk.last();
                 stk.removeLast();
@@ -139,11 +131,9 @@ void CalculationEngine::parseCalculationExpression(const QString &expression)
                 stk.removeLast();
                 stk.append(operation(b,a,number[0]));
             }
-            number = NULL;
+            number.clear();
         }
     }
 
     emit parsingSuccessful(stk.first());
-
-    //qDebug() << stk;
 }

@@ -1,5 +1,7 @@
 #include "blocksmodel.h"
 
+#include <QDebug>
+
 BlocksModel::BlocksModel(QObject *parent) : BlocksBaseModel(parent)
 {
     addBlock(CalculationBlock::Number, 0.02, 0.03);
@@ -24,8 +26,10 @@ QVariant BlocksModel::data(const QModelIndex &index, int role) const
                 return block.xPos();
             case PosYRole:
                 return block.yPos();
+        case SelectedRole:
+            return block.selected();
             case ModifiedRole:
-            return canModifyValue(block);
+                return canModifyValue(block);
         }
     }
 
@@ -42,6 +46,8 @@ bool BlocksModel::setData(const QModelIndex &index, const QVariant &value, int r
             block.setXPos(value.toReal());
         } else if(role == PosYRole) {
             block.setYPos(value.toReal());
+        } else if(role == SelectedRole) {
+            block.setSelected(value.toBool());
         } else {
             return BlocksBaseModel::setData(index, value, role);
         }
@@ -58,6 +64,7 @@ QHash<int, QByteArray> BlocksModel::roleNames() const
     roles[PosXRole]     = "x";
     roles[PosYRole]     = "y";
     roles[ModifiedRole] = "canModified";
+    roles[SelectedRole] = "selected";
 
     return roles;
 }
@@ -68,19 +75,56 @@ void BlocksModel::addBlock(const int type, qreal xPos, qreal yPos)
     BlocksBaseModel::addBlock(block);
 }
 
+void BlocksModel::duplicateSelectedBlocks()
+{
+    for(const auto &block : qAsConst(m_blocks)) {
+        if(block.selected()) {
+            auto yPos = block.yPos() + 0.02;
+            if(yPos > 1.) {
+                yPos = 1.;
+            }
+
+            CalculationBlock newBlock{block};
+            newBlock.setYPos(yPos);
+            BlocksBaseModel::addBlock(newBlock);
+        }
+    }
+
+    //TODO: deselect all
+}
+
+void BlocksModel::removeSelectedBlocks()
+{
+    beginResetModel();
+    for(int i = 0; i < m_blocks.size(); i++) {
+        if(m_blocks.at(i).selected()) {
+            m_blocks.removeAt(i);
+            i--;
+        }
+    }
+    endResetModel();
+}
+
 void BlocksModel::attachBlocks(const int sourceBlockIdx, const int targetBlockIdx, const int inputIdx)
 {
     if(targetBlockIdx >= 0 && targetBlockIdx < m_blocks.size()) {
         auto& targetBlock = m_blocks[targetBlockIdx];
         if(inputIdx < targetBlock.inputCount()) {
+            qDebug() << "Lead line from:" << sourceBlockIdx << "to:" << targetBlockIdx;
             targetBlock.setSourceBlockAt(inputIdx, sourceBlockIdx);
         }
     }
 }
 
-void BlocksModel::detachBlocks(const int sourceBlockIdx, const int targetBlockIdx, const int inuptIdx)
+void BlocksModel::detachBlocks(const int sourceBlockIdx, const int targetBlockIdx)
 {
-
+    if(targetBlockIdx >= 0 && targetBlockIdx < m_blocks.size()) {
+        auto& targetBlock = m_blocks[targetBlockIdx];
+        if(auto inputIdx = targetBlock.inputOfSource(sourceBlockIdx); inputIdx > -1) {
+            qDebug() << "Remove line from:" << sourceBlockIdx << "to:" << targetBlockIdx;
+            targetBlock.setSourceBlockAt(inputIdx, -1);
+        }
+    }
 }
 
 bool BlocksModel::canModifyValue(const CalculationBlock &block) const

@@ -11,6 +11,7 @@ public:
         PosXRole = Qt::UserRole + 100,
         PosYRole,
         ModifiedRole,
+        SelectedRole,
     };
 
     explicit BlocksModel(QObject *parent = nullptr);
@@ -20,11 +21,13 @@ public:
     virtual QHash<int, QByteArray> roleNames() const override;
 
     Q_INVOKABLE void addBlock(const int type, qreal xPos, qreal yPos);
+    Q_INVOKABLE void duplicateSelectedBlocks();
+    Q_INVOKABLE void removeSelectedBlocks();
     Q_INVOKABLE void attachBlocks(const int sourceBlockIdx, const int targetBlockIdx, const int inputIdx);
-    Q_INVOKABLE void detachBlocks(const int sourceBlockIdx, const int targetBlockIdx, const int inuptIdx);
+    Q_INVOKABLE void detachBlocks(const int sourceBlockIdx, const int targetBlockIdx);
 
 protected:
-    virtual bool canModifyValue(const CalculationBlock &block) const override;
+    virtual bool canModifyValue(const CalculationBlock &block) const override;        
 };
 
 #endif // BLOCKSMODEL_H

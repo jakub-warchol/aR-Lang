@@ -12,10 +12,14 @@
  */
 GuiEngine::GuiEngine(QObject *parent) : QObject(parent)
 {
-    m_blocksModel = new BlocksModel(this);
-    m_errorsModel = new ErrorModel(this);
-    m_calculationEngine   = new CalculationEngine(this);
-    m_expressionGenerator = new ExpressionGenerator(m_blocksModel, this);
+    m_blocksModel           = new BlocksModel(this);
+    m_selectedBlocksModel   = new SelectedBlocksModel(this);
+    m_errorsModel           = new ErrorModel(this);
+    m_connectionLinesModel  = new ConnectionLinesModel(this);
+    m_calculationEngine     = new CalculationEngine(this);
+    m_expressionGenerator   = new ExpressionGenerator(m_blocksModel, this);
+
+    m_selectedBlocksModel->setSourceModel(m_blocksModel);
 
     connect(this, &GuiEngine::calculationStarted, m_errorsModel, &ErrorModel::clearErrors);
     connect(this, &GuiEngine::calculationError, m_errorsModel, &ErrorModel::addError);
@@ -107,4 +111,14 @@ void GuiEngine::loadFromFile(const QString filePath)
 void GuiEngine::saveToFile(const QString filePath)
 {
 
+}
+
+SelectedBlocksModel *GuiEngine::selectedBlocksModel() const
+{
+    return m_selectedBlocksModel;
+}
+
+ConnectionLinesModel *GuiEngine::connectionLinesModel() const
+{
+    return m_connectionLinesModel;
 }

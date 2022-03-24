@@ -23,7 +23,8 @@ CalculationBlock::CalculationBlock(CalculationBlock::Type type, qreal x, qreal y
     m_isDestination(type != Number),
     m_isSource(type != Result),
     m_xPos(x),
-    m_yPos(y)
+    m_yPos(y),
+    m_selected(false)
 {
     if(type == Number) {
         m_inputCount = 0;
@@ -36,6 +37,18 @@ CalculationBlock::CalculationBlock(CalculationBlock::Type type, qreal x, qreal y
     m_sourceBlocksIdx.resize(m_inputCount);
     m_sourceBlocksIdx.fill(-1);
 }
+
+CalculationBlock::CalculationBlock(const CalculationBlock &other) :
+    m_type(other.type()),
+    m_value(other.value()),
+    m_isDestination(other.isDestination()),
+    m_isSource(other.isSource()),
+    m_inputCount(other.inputCount()),
+    m_xPos(other.xPos()),
+    m_yPos(other.yPos()),
+    m_sourceBlocksIdx(other.m_sourceBlocksIdx.cbegin(), other.m_sourceBlocksIdx.cend()),
+    m_selected(false)
+{}
 
 CalculationBlock::Type CalculationBlock::type() const
 {
@@ -120,5 +133,15 @@ void CalculationBlock::setSourceBlockAt(const int inputIdx, const int sourceBloc
 int CalculationBlock::inputOfSource(const int sourceBlockIdx) const
 {
     auto it = std::find(m_sourceBlocksIdx.cbegin(), m_sourceBlocksIdx.cend(), sourceBlockIdx);
-    return it != m_sourceBlocksIdx.cend() ? *it : -1;
+    return it != m_sourceBlocksIdx.cend() ? std::distance(m_sourceBlocksIdx.cbegin(), it) : -1;
+}
+
+bool CalculationBlock::selected() const
+{
+    return m_selected;
+}
+
+void CalculationBlock::setSelected(bool selected)
+{
+    m_selected = selected;
 }
