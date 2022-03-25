@@ -112,7 +112,7 @@ TriangleShape {
         onClicked: {
             if(root.targetInput !== null) {
                 root.lineSelected()
-                inner.outputClicked = !inner.outputClicked
+//                inner.outputClicked = !inner.outputClicked
             }
         }
     }

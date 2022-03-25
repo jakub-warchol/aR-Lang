@@ -15,7 +15,7 @@ Rectangle {
 
         onClicked: {
             forceActiveFocus()
-            // TODO: deselect all
+            guiEngine.deselectAll()
         }
     }
 
@@ -40,6 +40,7 @@ Rectangle {
             readOnly: !model.canModified
             inputCount: model.isDestination ? model.inputCount : 0
             hasOutput: model.isSource
+            selected: model.selected
 
             Component.onCompleted: {
                 scopeDelegate.x = root.width * model.x
@@ -71,8 +72,9 @@ Rectangle {
                 }
             }
 
-            onSelectedChanged: {
+            onSelectedToggled: {
                 model.selected = !model.selected
+
             }
 
             Connections {

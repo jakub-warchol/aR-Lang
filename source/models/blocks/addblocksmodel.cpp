@@ -1,5 +1,10 @@
 #include "addblocksmodel.h"
 
+/*!
+ * \brief AddBlocksModel::AddBlocksModel
+ * Constructor
+ * \param parent
+ */
 AddBlocksModel::AddBlocksModel(QObject *parent) : BlocksBaseModel(parent)
 {
     addBlock(CalculationBlock::Number);

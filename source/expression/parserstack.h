@@ -5,6 +5,10 @@
 #include <QHash>
 
 class CalculationBlock;
+/*!
+ * \brief The ParserStack class
+ * Represents stack of the parsing blocks into the infix expression
+ */
 class ParserStack
 {
 public:
@@ -24,10 +28,10 @@ public:
     void closeBracket();
 
 private:
-    QHash<CalculationBlock*, int> m_parsedSourceBlock;
-    QStack<CalculationBlock*> m_bracketsOpenBlocks;
-    QStack<CalculationBlock*> m_parentBlocks;
-    int m_bracketsDepth;
+    QHash<CalculationBlock*, int> m_parsedSourceBlock;  ///< Hash of blocks, ehich contains count of entering during parsing
+    QStack<CalculationBlock*> m_bracketsOpenBlocks;     ///< Stack of blocks which open the brackets
+    QStack<CalculationBlock*> m_parentBlocks;           ///< Stack of parent (operation) blocks which source block are currently parsing
+    int m_bracketsDepth;                                ///< Count of brackets depth
 };
 
 #endif // PARSERSTACK_H

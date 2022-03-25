@@ -49,6 +49,26 @@ ErrorModel *GuiEngine::errorsModel() const
 }
 
 /*!
+ * \brief GuiEngine::selectedBlocksModel
+ * Get selected blocks model
+ * \return
+ */
+SelectedBlocksModel *GuiEngine::selectedBlocksModel() const
+{
+    return m_selectedBlocksModel;
+}
+
+/*!
+ * \brief GuiEngine::connectionLinesModel
+ * Get connection lines model
+ * \return
+ */
+ConnectionLinesModel *GuiEngine::connectionLinesModel() const
+{
+    return m_connectionLinesModel;
+}
+
+/*!
  * \brief GuiEngine::aboutQt
  * Show aboutQt dialog
  */
@@ -113,12 +133,13 @@ void GuiEngine::saveToFile(const QString filePath)
 
 }
 
-SelectedBlocksModel *GuiEngine::selectedBlocksModel() const
+/*!
+ * \brief GuiEngine::deselectAll
+ * Deselect all lines and blocks on the Scope
+ */
+void GuiEngine::deselectAll()
 {
-    return m_selectedBlocksModel;
-}
-
-ConnectionLinesModel *GuiEngine::connectionLinesModel() const
-{
-    return m_connectionLinesModel;
+    qDebug() << "Deselect all blocks and lines";
+    m_blocksModel->deselectAllBlocks();
+    m_connectionLinesModel->deselectAllLines();
 }

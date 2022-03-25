@@ -2,25 +2,50 @@
 
 #include <QQuickItem>
 
+/*!
+ * \brief ConnectionLinesModel::ConnectionLinesModel
+ * Constructor
+ * \param parent
+ */
 ConnectionLinesModel::ConnectionLinesModel(QObject *parent) : QObject(parent)
 {}
 
+/*!
+ * \brief ConnectionLinesModel::linesCount
+ * Get lines count
+ * \return
+ */
 int ConnectionLinesModel::linesCount() const
 {
     return m_lines.size();
 }
 
+/*!
+ * \brief ConnectionLinesModel::selectedLinesCount
+ * Get selected lines count
+ * \return
+ */
 int ConnectionLinesModel::selectedLinesCount() const
 {
     return m_selectedLines.size();
 }
 
+/*!
+ * \brief ConnectionLinesModel::addLine
+ * Add line to model
+ * \param line
+ */
 void ConnectionLinesModel::addLine(QQuickItem *line)
 {
     m_lines.push_back(line);
     emit linesCountChanged(m_lines.size());
 }
 
+/*!
+ * \brief ConnectionLinesModel::removeLine
+ * Remove line from model
+ * \param line
+ */
 void ConnectionLinesModel::removeLine(QQuickItem *line)
 {
     int lineIdx = -1;
@@ -42,6 +67,10 @@ void ConnectionLinesModel::removeLine(QQuickItem *line)
     }
 }
 
+/*!
+ * \brief ConnectionLinesModel::removeSelectedLines
+ * Remove selected lines
+ */
 void ConnectionLinesModel::removeSelectedLines()
 {
     for(auto &line : m_selectedLines) {
@@ -54,6 +83,11 @@ void ConnectionLinesModel::removeSelectedLines()
     emit selectedLinesCountChanged(m_selectedLines.size());
 }
 
+/*!
+ * \brief ConnectionLinesModel::toggleLineSelectionStatus
+ * Toggle selection status of line
+ * \param line
+ */
 void ConnectionLinesModel::toggleLineSelectionStatus(QQuickItem *line)
 {
     if(auto selectedLineIdx = lineInSelectedModelIndex(line); selectedLineIdx > -1) {
@@ -65,6 +99,24 @@ void ConnectionLinesModel::toggleLineSelectionStatus(QQuickItem *line)
     emit selectedLinesCountChanged(m_selectedLines.size());
 }
 
+/*!
+ * \brief ConnectionLinesModel::deselectAllLines
+ * Deselect all ines on the Scope
+ */
+void ConnectionLinesModel::deselectAllLines()
+{
+    for(auto &line : m_selectedLines) {
+        toggleLineSelectionStatus(line);
+        line->setProperty("selected", false);
+    }
+}
+
+/*!
+ * \brief ConnectionLinesModel::lineInSelectedModelIndex
+ * Get index of the line in the selected model
+ * \param line
+ * \return
+ */
 int ConnectionLinesModel::lineInSelectedModelIndex(QQuickItem *line) const
 {
     int idx = -1;

@@ -4,6 +4,10 @@
 #include <QObject>
 
 class QQuickItem;
+/*!
+ * \brief The ConnectionLinesModel class
+ * Provides model of Lines, which connect blocks
+ */
 class ConnectionLinesModel : public QObject
 {
     Q_OBJECT
@@ -20,6 +24,8 @@ public:
     Q_INVOKABLE void removeSelectedLines();
     Q_INVOKABLE void toggleLineSelectionStatus(QQuickItem *line);
 
+    void deselectAllLines();
+
 signals:
     void linesCountChanged(int linesCount);
     void selectedLinesCountChanged(int selectedLinesCount);
@@ -28,8 +34,8 @@ private:
     int lineInSelectedModelIndex(QQuickItem *line) const;
 
 private:
-    QVector<QQuickItem*> m_lines;
-    QVector<QQuickItem*> m_selectedLines;
+    QVector<QQuickItem*> m_lines;           ///< Vector of all lines on the Scope
+    QVector<QQuickItem*> m_selectedLines;   ///< Vector of selected lines on the Scope
 };
 
 #endif // CONNECTIONLINESMODEL_H

@@ -5,10 +5,18 @@
 
 #include "calculationblock.h"
 
+/*!
+ * \brief The BlocksBaseModel class
+ * Represents base class of blocks model
+ */
 class BlocksBaseModel : public QAbstractListModel
 {
     Q_OBJECT
 public:
+    /*!
+     * \brief The Roles enum
+     * Role of QML data field
+     */
     enum Roles {
         TypeRole = Qt::UserRole + 1,
         ValueRole,
@@ -35,7 +43,7 @@ protected:
     virtual bool canModifyValue(const CalculationBlock &block) const;
 
 protected:
-    QList<CalculationBlock> m_blocks;
+    QList<CalculationBlock> m_blocks;   ///< List of blocks in a model
 
 };
 

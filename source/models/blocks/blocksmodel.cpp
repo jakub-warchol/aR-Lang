@@ -2,6 +2,11 @@
 
 #include <QDebug>
 
+/*!
+ * \brief BlocksModel::BlocksModel
+ * Constructor
+ * \param parent
+ */
 BlocksModel::BlocksModel(QObject *parent) : BlocksBaseModel(parent)
 {
     addBlock(CalculationBlock::Number, 0.02, 0.03);
@@ -17,6 +22,13 @@ BlocksModel::BlocksModel(QObject *parent) : BlocksBaseModel(parent)
     addBlock(CalculationBlock::Number, 0.52, 0.25);
 }
 
+/*!
+ * \brief BlocksModel::data
+ * Get data's role for given index
+ * \param index
+ * \param role
+ * \return
+ */
 QVariant BlocksModel::data(const QModelIndex &index, int role) const
 {
     if(index.isValid()) {
@@ -38,6 +50,14 @@ QVariant BlocksModel::data(const QModelIndex &index, int role) const
     return BlocksBaseModel::data(index, role);
 }
 
+/*!
+ * \brief BlocksModel::setData
+ * Set data's role for given index
+ * \param index
+ * \param value
+ * \param role
+ * \return
+ */
 bool BlocksModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
     if(index.isValid()) {
@@ -60,6 +80,11 @@ bool BlocksModel::setData(const QModelIndex &index, const QVariant &value, int r
     return false;
 }
 
+/*!
+ * \brief BlocksModel::roleNames
+ * Get QML's role names
+ * \return
+ */
 QHash<int, QByteArray> BlocksModel::roleNames() const
 {
     auto roles = BlocksBaseModel::roleNames();
@@ -71,12 +96,23 @@ QHash<int, QByteArray> BlocksModel::roleNames() const
     return roles;
 }
 
+/*!
+ * \brief BlocksModel::addBlock
+ * Add block with given type and ccordination
+ * \param type
+ * \param xPos
+ * \param yPos
+ */
 void BlocksModel::addBlock(const int type, qreal xPos, qreal yPos)
 {
     CalculationBlock block{static_cast<CalculationBlock::Type>(type), xPos, yPos};
     BlocksBaseModel::addBlock(block);
 }
 
+/*!
+ * \brief BlocksModel::duplicateSelectedBlocks
+ * Duplicate selected blocks
+ */
 void BlocksModel::duplicateSelectedBlocks()
 {
     for(const auto &block : qAsConst(m_blocks)) {
@@ -92,9 +128,13 @@ void BlocksModel::duplicateSelectedBlocks()
         }
     }
 
-    //TODO: deselect all
+    deselectAllBlocks();
 }
 
+/*!
+ * \brief BlocksModel::removeSelectedBlocks
+ * Remove selected blocks
+ */
 void BlocksModel::removeSelectedBlocks()
 {
     beginResetModel();
@@ -107,6 +147,13 @@ void BlocksModel::removeSelectedBlocks()
     endResetModel();
 }
 
+/*!
+ * \brief BlocksModel::attachBlocks
+ * Attack source block to teth taret block on given input
+ * \param sourceBlockIdx
+ * \param targetBlockIdx
+ * \param inputIdx
+ */
 void BlocksModel::attachBlocks(const int sourceBlockIdx, const int targetBlockIdx, const int inputIdx)
 {
     if(targetBlockIdx >= 0 && targetBlockIdx < m_blocks.size()) {
@@ -118,6 +165,12 @@ void BlocksModel::attachBlocks(const int sourceBlockIdx, const int targetBlockId
     }
 }
 
+/*!
+ * \brief BlocksModel::detachBlocks
+ * Detach source block from target block
+ * \param sourceBlockIdx
+ * \param targetBlockIdx
+ */
 void BlocksModel::detachBlocks(const int sourceBlockIdx, const int targetBlockIdx)
 {
     if(targetBlockIdx >= 0 && targetBlockIdx < m_blocks.size()) {
@@ -129,6 +182,25 @@ void BlocksModel::detachBlocks(const int sourceBlockIdx, const int targetBlockId
     }
 }
 
+/*!
+ * \brief BlocksModel::deselectAllBlocks
+ * Deselect all blocks on the scope
+ */
+void BlocksModel::deselectAllBlocks()
+{
+    for(int i = 0; i < m_blocks.size(); i++) {
+        if(m_blocks.at(i).selected()) {
+            setData(index(i), false, SelectedRole);
+        }
+    }
+}
+
+/*!
+ * \brief BlocksModel::canModifyValue
+ * Reimplementation from BlocksBaseModel
+ * \param block
+ * \return
+ */
 bool BlocksModel::canModifyValue(const CalculationBlock &block) const
 {
     return block.type() == CalculationBlock::Number;

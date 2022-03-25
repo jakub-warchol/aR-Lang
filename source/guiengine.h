@@ -34,6 +34,7 @@ public:
     Q_INVOKABLE void startCalculation();
     Q_INVOKABLE void loadFromFile(const QString filePath);
     Q_INVOKABLE void saveToFile(const QString filePath);
+    Q_INVOKABLE void deselectAll();
 
 signals:
     void calculationStarted();                      ///< notify that calclation was started

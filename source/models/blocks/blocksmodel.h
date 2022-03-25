@@ -3,10 +3,18 @@
 
 #include "blocksbasemodel.h"
 
+/*!
+ * \brief The BlocksModel class
+ * Represents blocks on the Scope
+ */
 class BlocksModel : public BlocksBaseModel
 {
     Q_OBJECT
 public:
+    /*!
+     * \brief The Roles enum
+     * Data's role
+     */
     enum Roles {
         PosXRole = Qt::UserRole + 100,
         PosYRole,
@@ -25,6 +33,8 @@ public:
     Q_INVOKABLE void removeSelectedBlocks();
     Q_INVOKABLE void attachBlocks(const int sourceBlockIdx, const int targetBlockIdx, const int inputIdx);
     Q_INVOKABLE void detachBlocks(const int sourceBlockIdx, const int targetBlockIdx);
+
+    void deselectAllBlocks();
 
 protected:
     virtual bool canModifyValue(const CalculationBlock &block) const override;        

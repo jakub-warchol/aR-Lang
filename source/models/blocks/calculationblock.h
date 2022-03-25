@@ -4,18 +4,27 @@
 #include <QString>
 #include <QVector>
 
+/*!
+ * \brief The CalculationBlock class
+ * Represents block of operation or number, which is used
+ * on the Scope
+ */
 class CalculationBlock
 {
 public:
+    /*!
+     * \brief The Type enum
+     * Type of block
+     */
     enum Type {
-        Number,
-        Add,
-        Substraction,
-        Multiplication,
-        Division,
-        Exponentation,
-        Root,
-        Result,
+        Number,         ///< Number
+        Add,            ///< Add
+        Substraction,   ///< Substraction
+        Multiplication, ///< Multiplication
+        Division,       ///< Division
+        Exponentation,  ///< Exponentation
+        Root,           ///< Root
+        Result,         ///< Operation result
     };
 
     explicit CalculationBlock(Type type, qreal x = 0., qreal y = 0.);
@@ -52,15 +61,15 @@ public:
     int inputOfSource(const int sourceBlockIdx) const;
 
 private:
-    Type m_type;
-    QString m_value;
-    bool m_isDestination;
-    bool m_isSource;
-    int m_inputCount;
-    qreal m_xPos;
-    qreal m_yPos;
-    QVector<int> m_sourceBlocksIdx;
-    bool m_selected;
+    Type m_type;                    ///< Type of block
+    QString m_value;                ///< Value og block
+    bool m_isDestination;           ///< Is block destination
+    bool m_isSource;                ///< Is block source
+    int m_inputCount;               ///< Input block count
+    qreal m_xPos;                   ///< Block's position of x
+    qreal m_yPos;                   ///< Block's position of y
+    QVector<int> m_sourceBlocksIdx; ///< Indices of ssource blocks attached
+    bool m_selected;                ///< Is block selected
 };
 
 #endif // CALCULATIONBLOCK_H

@@ -3,6 +3,10 @@
 
 #include <QSortFilterProxyModel>
 
+/*!
+ * \brief The SelectedBlocksModel class
+ * Represents proxy model of selected blocks
+ */
 class SelectedBlocksModel : public QSortFilterProxyModel
 {
     Q_OBJECT

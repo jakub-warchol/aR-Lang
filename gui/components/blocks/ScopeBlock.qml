@@ -23,6 +23,8 @@ Rectangle {
     property int minimumYDrag: 0
     property int maximumYDrag: 0
 
+    signal selectedToggled
+
     function addLineToModel() {
         guiEngine.connectionLinesModel.addLine(line)
     }
@@ -93,7 +95,7 @@ Rectangle {
 
         onClicked: {
             forceActiveFocus()
-            root.selected = !root.selected
+            root.selectedToggled()
         }
 
         onDoubleClicked: {
