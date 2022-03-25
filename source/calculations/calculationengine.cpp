@@ -71,6 +71,15 @@ void CalculationEngine::parseCalculationExpression(const QString &expression)
     for (QChar symbol : input){
         if ((symbol.isDigit() || symbol == '.') || (symbol == '-' && !lastSymbol.isDigit())){
             stos.append(symbol);
+        }else if(symbol == '('){
+            symbole.append(symbol);
+        }else if(symbol == ')'){
+            while (symbole.back() != '('){
+                stos.append(" ");
+                stos.append(symbole.back());
+                symbole.chop(1);
+            }
+            symbole.chop(1);
         }else{
             stos.append(" ");
             if (symbole.isEmpty()){
