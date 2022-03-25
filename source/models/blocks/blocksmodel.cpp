@@ -10,9 +10,11 @@ BlocksModel::BlocksModel(QObject *parent) : BlocksBaseModel(parent)
     addBlock(CalculationBlock::Add, 0.17, 0.14);
     addBlock(CalculationBlock::Multiplication, 0.4, 0.35);
     addBlock(CalculationBlock::Result, 0.66, 0.35);
-    addBlock(CalculationBlock::Multiplication, 0.53, 0.35);
+    addBlock(CalculationBlock::Substraction, 0.53, 0.35);
     addBlock(CalculationBlock::Number, 0.52, 0.25);
     addBlock(CalculationBlock::Number, 0.51, 0.28);
+    addBlock(CalculationBlock::Division, 0.53, 0.35);
+    addBlock(CalculationBlock::Number, 0.52, 0.25);
 }
 
 QVariant BlocksModel::data(const QModelIndex &index, int role) const

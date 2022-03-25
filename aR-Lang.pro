@@ -7,6 +7,7 @@ SOURCES += \
         main.cpp \
         source/calculations/calculationengine.cpp \
         source/expression/expressiongenerator.cpp \
+        source/expression/parserstack.cpp \
         source/guiengine.cpp \
         source/models/blocks/addblocksmodel.cpp \
         source/models/blocks/blocksbasemodel.cpp \
@@ -22,6 +23,7 @@ RESOURCES += qml.qrc \
 HEADERS += \
     source/calculations/calculationengine.h \
     source/expression/expressiongenerator.h \
+    source/expression/parserstack.h \
     source/guiengine.h \
     source/models/blocks/addblocksmodel.h \
     source/models/blocks/blocksbasemodel.h \

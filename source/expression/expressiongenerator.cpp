@@ -1,12 +1,10 @@
 #include "expressiongenerator.h"
 #include "source/models/blocks/blocksmodel.h"
+#include "parserstack.h"
 
-#include <QMap>
-#include <QStack>
-#include <QHash>
 #include <QDebug>
 
-static QMap<CalculationBlock::Type, QString> valueMapper = {
+static QMap<CalculationBlock::Type, QString> operationToStringMapper = {
     {CalculationBlock::Add, QStringLiteral("+")},
     {CalculationBlock::Substraction, QStringLiteral("-")},
     {CalculationBlock::Multiplication, QStringLiteral("*")},
@@ -43,17 +41,15 @@ bool ExpressionGenerator::generateExpression(const CalculationBlock &resultBlock
         return false;
     }
 
-    QHash<CalculationBlock*, int> parsedSourceBlock;
-
-    QStack<CalculationBlock*> parentBlocks;
-    parentBlocks.push(m_blocksModel->blockAt(currentBlockIdx));
-
+    ParserStack parserStack{};
     auto currentBlock = m_blocksModel->blockAt(currentBlockIdx);
-    while(!parentBlocks.isEmpty()) {
+    parserStack.addParentBlock(currentBlock);
+
+    while(parserStack.hasParentBlock()) {
         //TODO: maybe it would be refactor? (if and else bracnhes have both part)
         //TODO: add check dividing by zero etc
         if(currentBlock->type() == CalculationBlock::Number) {
-            auto parentBlock = parentBlocks.top();
+            auto parentBlock = parserStack.parentBlock();
             if(parentBlock->type() == CalculationBlock::Root) { //TODO: fix genrating root
                 m_generatedExpression += QStringLiteral("1/%1").arg(currentBlock->value());
             } else {
@@ -66,16 +62,18 @@ bool ExpressionGenerator::generateExpression(const CalculationBlock &resultBlock
 
             currentBlock = parentBlock;
         } else {
-            if(auto inputIdx = parsedSourceBlock[currentBlock]; inputIdx == 0) {
+            if(auto inputIdx = parserStack.blockParsingCount(currentBlock); inputIdx == 0) {
                 auto childBlockIdx = currentBlock->sourceBlockAt(0);
                 if(childBlockIdx == -1) {
                     m_errorString = tr("One of the source not attached to block");
                     return false;
                 }
 
-                parentBlocks.push(currentBlock);
-                parsedSourceBlock[currentBlock]++;
+                parserStack.addParentBlock(currentBlock);
+                parserStack.incrementBlockParsingCount(currentBlock);
+                parserStack.openBracket(currentBlock);
                 currentBlock = m_blocksModel->blockAt(childBlockIdx);
+                m_generatedExpression += QStringLiteral("(");
             } else if(inputIdx < currentBlock->inputCount()){
                 auto childBlockIdx = currentBlock->sourceBlockAt(inputIdx);
                 if(childBlockIdx == -1) {
@@ -83,15 +81,24 @@ bool ExpressionGenerator::generateExpression(const CalculationBlock &resultBlock
                     return false;
                 }
 
-                m_generatedExpression += valueMapper[currentBlock->type()];
-                parsedSourceBlock[currentBlock]++;
+                m_generatedExpression += operationToStringMapper[currentBlock->type()];
+                parserStack.incrementBlockParsingCount(currentBlock);
                 currentBlock = m_blocksModel->blockAt(childBlockIdx);
-            } else if(parentBlocks.size() > 1) {
-                currentBlock = parentBlocks.pop();
+            } else if(parserStack.hasParentBlock()) {
+                if(currentBlock == parserStack.currentBracketsOpenBlock()) {
+                    m_generatedExpression += QStringLiteral(")");
+                    parserStack.closeBracket();
+                }
+
+                currentBlock = parserStack.removeParentBlock();
             } else {
                 break;
             }
         }
+    }
+
+    if(parserStack.bracketsDepth() > 0) {
+        m_generatedExpression += QStringLiteral(")");
     }
 
     qDebug() << "Generated expression:" << m_generatedExpression;
