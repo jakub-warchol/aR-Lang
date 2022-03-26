@@ -8,6 +8,9 @@ SOURCES += \
         source/calculations/calculationengine.cpp \
         source/expression/expressiongenerator.cpp \
         source/expression/parserstack.cpp \
+        source/files/filereader.cpp \
+        source/files/filesmanager.cpp \
+        source/files/filewriter.cpp \
         source/guiengine.cpp \
         source/models/blocks/addblocksmodel.cpp \
         source/models/blocks/blocksbasemodel.cpp \
@@ -24,6 +27,9 @@ HEADERS += \
     source/calculations/calculationengine.h \
     source/expression/expressiongenerator.h \
     source/expression/parserstack.h \
+    source/files/filereader.h \
+    source/files/filesmanager.h \
+    source/files/filewriter.h \
     source/guiengine.h \
     source/models/blocks/addblocksmodel.h \
     source/models/blocks/blocksbasemodel.h \

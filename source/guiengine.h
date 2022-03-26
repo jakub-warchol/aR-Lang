@@ -10,6 +10,7 @@
 
 class CalculationEngine;
 class ExpressionGenerator;
+class FilesManager;
 /*!
  * \brief The GuiEngine class
  * Provide a bridge to communication between C++ and QML.
@@ -49,6 +50,7 @@ private:
 
     CalculationEngine* m_calculationEngine;         ///< Instance of CalculationEngine
     ExpressionGenerator* m_expressionGenerator;     ///< Instance of ExpressionGenerator
+    FilesManager* m_filesManager;                   ///< Instance of FilesManager
 };
 
 #endif // GUIENGINE_H

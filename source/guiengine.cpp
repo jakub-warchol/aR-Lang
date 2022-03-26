@@ -1,6 +1,7 @@
 #include "guiengine.h"
 #include "source/calculations/calculationengine.h"
 #include "source/expression/expressiongenerator.h"
+#include "source/files/filesmanager.h"
 
 #include <QApplication>
 #include <QDebug>
@@ -18,6 +19,7 @@ GuiEngine::GuiEngine(QObject *parent) : QObject(parent)
     m_connectionLinesModel  = new ConnectionLinesModel(this);
     m_calculationEngine     = new CalculationEngine(this);
     m_expressionGenerator   = new ExpressionGenerator(m_blocksModel, this);
+    m_filesManager          = new FilesManager(this);
 
     m_selectedBlocksModel->setSourceModel(m_blocksModel);
 
@@ -26,6 +28,8 @@ GuiEngine::GuiEngine(QObject *parent) : QObject(parent)
 
     connect(m_calculationEngine, &CalculationEngine::parsingError, this, &GuiEngine::calculationError);
     connect(m_calculationEngine, &CalculationEngine::parsingSuccessful, this, &GuiEngine::calculationSucceeded);
+
+    connect(m_filesManager, &FilesManager::error, m_errorsModel, &ErrorModel::addError);
 }
 
 /*!
@@ -120,7 +124,7 @@ void GuiEngine::startCalculation()
  */
 void GuiEngine::loadFromFile(const QString filePath)
 {
-
+    m_filesManager->readFromFile(filePath);
 }
 
 /*!
@@ -130,7 +134,7 @@ void GuiEngine::loadFromFile(const QString filePath)
  */
 void GuiEngine::saveToFile(const QString filePath)
 {
-
+    m_filesManager->saveToFile(filePath);
 }
 
 /*!
