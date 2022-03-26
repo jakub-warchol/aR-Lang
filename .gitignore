@@ -124,4 +124,7 @@ compile_commands.json
 # KDE files
 .directory
 
+# Doxygen generated files
+doxyfiles
+
 # End of https://www.toptal.com/developers/gitignore/api/c++,qtcreator,qt,qml
