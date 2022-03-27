@@ -52,6 +52,9 @@ Rectangle {
         horizontalAlignment: Text.AlignHCenter
         bgColor: "transparent"
         inputMethodHints: Qt.ImhDigitsOnly
+        validator: RegExpValidator{
+            regExp: /^[-+]?[0-9]*\.?[0-9]+$/
+        }
     }
 
     BlockOut {
