@@ -31,7 +31,7 @@ Item {
                 }
 
                 function onCalculationSucceeded(result) {
-                    resultTf.text = result
+                    resultTf.text = Number(result).toFixed(6) * 1 // * 1 to remove unsignificant 0s
                 }
             }
         }

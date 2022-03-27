@@ -2,32 +2,32 @@
 
 #include <QtMath>
 
-static int wagaOperatora(QChar input){
-    int waga = 0;
+static int operatorRank(QChar input){
+    int rank = 0;
 
     switch (input.toLatin1()){
     case '+':
-        waga = 1;
+        rank = 1;
         break;
 
     case '-':
-        waga = 1;
+        rank = 1;
         break;
 
     case '*':
-        waga = 2;
+        rank = 2;
         break;
 
     case '/':
-        waga = 2;
+        rank = 2;
         break;
 
     case '^':
-        waga = 3;
+        rank = 3;
         break;
     }
 
-    return waga;
+    return rank;
 }
 
 static double operation(double a, double b, QChar op){
@@ -64,70 +64,70 @@ void CalculationEngine::parseCalculationExpression(const QString &expression)
     QString input = expression;
     input.replace(",",".");
 
-    QString stos;
-    QString symbole;
+    QString symbolsStack;
+    QString symbols;
     QChar lastSymbol;
 
     for (QChar symbol : input){
         if ((symbol.isDigit() || symbol == '.') || (symbol == '-' && !lastSymbol.isDigit())){
-            stos.append(symbol);
+            symbolsStack.append(symbol);
         }else if(symbol == '('){
-            symbole.append(symbol);
+            symbols.append(symbol);
         }else if(symbol == ')'){
-            while (symbole.back() != '('){
-                stos.append(" ");
-                stos.append(symbole.back());
-                symbole.chop(1);
+            while (symbols.back() != '('){
+                symbolsStack.append(" ");
+                symbolsStack.append(symbols.back());
+                symbols.chop(1);
             }
-            symbole.chop(1);
+            symbols.chop(1);
         }else{
-            stos.append(" ");
-            if (symbole.isEmpty()){
-                symbole.append(symbol);
+            symbolsStack.append(" ");
+            if (symbols.isEmpty()){
+                symbols.append(symbol);
             }else{
 
                 while (true){
                     if (symbol == '^'){ //prawostronna operacja
-                        if (wagaOperatora(symbol) < wagaOperatora(symbole.back())){
-                            stos.append(symbole.back());
-                            symbole.chop(1);
-                            stos.append(" ");
+                        if (operatorRank(symbol) < operatorRank(symbols.back())){
+                            symbolsStack.append(symbols.back());
+                            symbols.chop(1);
+                            symbolsStack.append(" ");
                         }else{
                             break;
                         }
                     }else{
-                        if (wagaOperatora(symbol) <= wagaOperatora(symbole.back())){
-                            stos.append(symbole.back()); //front i back
-                            symbole.chop(1);
-                            stos.append(" ");
+                        if (operatorRank(symbol) <= operatorRank(symbols.back())){
+                            symbolsStack.append(symbols.back()); //front i back
+                            symbols.chop(1);
+                            symbolsStack.append(" ");
                         }else{
                             break;
                         }
                     }
 
-                    if (symbole.isEmpty()){
+                    if (symbols.isEmpty()){
                         break;
                     }
                 }
 
-                symbole.append(symbol);
+                symbols.append(symbol);
             }
         }
         lastSymbol = symbol;
 
     }
 
-    std::reverse(symbole.begin(), symbole.end()); //odwrotna kolesnosc
+    std::reverse(symbols.begin(), symbols.end()); //odwrotna kolesnosc
 
-    for (QChar symbol : symbole){
-        stos += ' ' + symbol;
+    for (QChar symbol : symbols){
+        symbolsStack += ' ' + symbol;
     }
 
     QString number;
     QList<double> stk;
-    stos += ' ';
+    symbolsStack += ' ';
 
-    for (QChar symbol : qAsConst(stos)) {
+    for (QChar symbol : qAsConst(symbolsStack)) {
         if (symbol != ' '){
             number += symbol;
         }else{

@@ -13,6 +13,20 @@ static QMap<CalculationBlock::Type, QString> operationToStringMapper = {
     {CalculationBlock::Root, QStringLiteral("^")},
 };
 
+static QString swapRoot2Power(QString root) {
+    auto rootValue = root.toDouble();
+    if(rootValue <= 0) {
+        return QString{};
+    } else {
+        return QString::number(1. / rootValue);
+    }
+}
+
+static bool canDivideBy(const QString &divider) {
+    auto dividerValue = divider.toDouble();
+    return dividerValue != 0.;
+}
+
 /*!
  * \brief ExpressionGenerator::ExpressionGenerator
  * Constructor
@@ -46,12 +60,22 @@ bool ExpressionGenerator::generateExpression(const CalculationBlock &resultBlock
     parserStack.addParentBlock(currentBlock);
 
     while(parserStack.hasParentBlock()) {
-        //TODO: maybe it would be refactor? (if and else bracnhes have both part)
-        //TODO: add check dividing by zero etc
         if(currentBlock->type() == CalculationBlock::Number) {
             auto parentBlock = parserStack.parentBlock();
-            if(parentBlock->type() == CalculationBlock::Root) { //TODO: fix genrating root
-                m_generatedExpression += QStringLiteral("1/%1").arg(currentBlock->value());
+            if(parentBlock->type() == CalculationBlock::Root && parserStack.blockParsingCount(parentBlock) > 1) {
+                if(auto powValue = swapRoot2Power(currentBlock->value()); powValue.isEmpty()) { // degree of root cannot be negative or zero
+                    m_errorString = tr("The root's degree is equaled or less than 0!");
+                    return false;
+                } else {
+                    m_generatedExpression += powValue;
+                }
+            } else if(parentBlock->type() == CalculationBlock::Division && parserStack.blockParsingCount(parentBlock) > 1){
+                if(canDivideBy(currentBlock->value())) {
+                    m_generatedExpression += currentBlock->value();
+                } else {
+                    m_errorString = tr("Cannot divide by 0!");
+                    return false;
+                }
             } else {
                 m_generatedExpression += currentBlock->value();
             }
@@ -71,9 +95,9 @@ bool ExpressionGenerator::generateExpression(const CalculationBlock &resultBlock
 
                 parserStack.addParentBlock(currentBlock);
                 parserStack.incrementBlockParsingCount(currentBlock);
-                parserStack.openBracket(currentBlock);
+//                parserStack.openBracket(currentBlock);
                 currentBlock = m_blocksModel->blockAt(childBlockIdx);
-                m_generatedExpression += QStringLiteral("(");
+//                m_generatedExpression += QStringLiteral("(");
             } else if(inputIdx < currentBlock->inputCount()){
                 auto childBlockIdx = currentBlock->sourceBlockAt(inputIdx);
                 if(childBlockIdx == -1) {
@@ -85,10 +109,10 @@ bool ExpressionGenerator::generateExpression(const CalculationBlock &resultBlock
                 parserStack.incrementBlockParsingCount(currentBlock);
                 currentBlock = m_blocksModel->blockAt(childBlockIdx);
             } else if(parserStack.hasParentBlock()) {
-                if(currentBlock == parserStack.currentBracketsOpenBlock()) {
-                    m_generatedExpression += QStringLiteral(")");
-                    parserStack.closeBracket();
-                }
+//                if(currentBlock == parserStack.currentBracketsOpenBlock()) {
+//                    m_generatedExpression += QStringLiteral(")");
+//                    parserStack.closeBracket();
+//                }
 
                 currentBlock = parserStack.removeParentBlock();
             } else {
@@ -97,9 +121,9 @@ bool ExpressionGenerator::generateExpression(const CalculationBlock &resultBlock
         }
     }
 
-    if(parserStack.bracketsDepth() > 0) {
-        m_generatedExpression += QStringLiteral(")");
-    }
+//    if(parserStack.bracketsDepth() > 0) {
+//        m_generatedExpression += QStringLiteral(")");
+//    }
 
     qDebug() << "Generated expression:" << m_generatedExpression;
     return true;
