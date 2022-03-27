@@ -91,4 +91,32 @@ Rectangle {
             }
         }
     }
+
+    DropArea {
+        id: addBlockDropArea
+        anchors.fill: parent
+        enabled: true
+        keys: "add_block"
+
+        onDropped: {
+            if(drop.action === Qt.CopyAction) {
+                const formats = drop.formats
+                if(formats !== []) {
+                    const type  = drop.getDataAsString(formats[1])
+                    const point = mapToItem(root, drop.x, drop.y)
+                    guiEngine.blocksModel.addBlock(type, point.x / root.width, point.y / root.height)
+                }
+            }
+        }
+    }
+
+    states: State {
+        name: "block_adding"
+        when: addBlockDropArea.containsDrag
+
+        PropertyChanges {
+            target: root
+            color: Qt.darker(GuiStyle.color3, 1.25)
+        }
+    }
 }

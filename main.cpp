@@ -4,6 +4,7 @@
 #include <QQmlContext>
 
 #include "source/guiengine.h"
+#include "source/models/blocks/addblocksmodel.h"
 
 int main(int argc, char *argv[])
 {
@@ -21,6 +22,7 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
     qmlRegisterSingletonType(QUrl(QStringLiteral("qrc:/gui/GuiStyle.qml")), "GuiStyle", 1, 0, "GuiStyle");
+    qmlRegisterType<AddBlocksModel>("AddBlocks", 1, 0, "AddBlocksModel");
 
     engine.rootContext()->setContextProperty(QLatin1String("guiEngine"), guiEngine.data());
 
