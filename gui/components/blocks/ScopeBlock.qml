@@ -11,7 +11,7 @@ Rectangle {
     id: root
     radius: 20
     border.width: 2
-
+    property alias moveable: mouseArea.enabled
     property alias value: valueLbl.text
     property alias readOnly: valueLbl.readOnly
     property alias inputCount: blocksIn.inputCount
@@ -85,6 +85,7 @@ Rectangle {
     }
 
     MouseArea {
+        id: mouseArea
         anchors.fill: parent
         drag.axis: Drag.XAndYAxis
         drag.target: parent

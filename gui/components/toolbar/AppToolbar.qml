@@ -41,6 +41,7 @@ ToolBar {
         AppToolButton {
             icon.source: "qrc:/resources/icons/add.png"
             onClicked: {
+                mainWindow.openAddBlocksWindow()
             }
         }
 
