@@ -8,19 +8,7 @@
  * \param parent
  */
 BlocksModel::BlocksModel(QObject *parent) : BlocksBaseModel(parent)
-{
-    addBlock(CalculationBlock::Number, 0.02, 0.03);
-    addBlock(CalculationBlock::Number, 0.01, 0.31);
-    addBlock(CalculationBlock::Number, 0.29, 0.67);
-    addBlock(CalculationBlock::Add, 0.17, 0.14);
-    addBlock(CalculationBlock::Multiplication, 0.4, 0.35);
-    addBlock(CalculationBlock::Result, 0.66, 0.35);
-    addBlock(CalculationBlock::Substraction, 0.53, 0.35);
-    addBlock(CalculationBlock::Number, 0.52, 0.25);
-    addBlock(CalculationBlock::Number, 0.51, 0.28);
-    addBlock(CalculationBlock::Division, 0.53, 0.35);
-    addBlock(CalculationBlock::Number, 0.52, 0.25);
-}
+{}
 
 /*!
  * \brief BlocksModel::data
@@ -192,6 +180,40 @@ void BlocksModel::deselectAllBlocks()
         if(m_blocks.at(i).selected()) {
             setData(index(i), false, SelectedRole);
         }
+    }
+}
+
+/*!
+ * \brief BlocksModel::clearModel
+ * Clear model
+ */
+void BlocksModel::clearModel()
+{
+    beginResetModel();
+    m_blocks.clear();
+    endResetModel();
+}
+
+/*!
+ * \brief BlocksModel::refreshModel
+ * Force update model data
+ */\
+void BlocksModel::refreshModel()
+{
+    emit dataChanged(index(0), index(m_blocks.size()));
+}
+
+/*!
+ * \brief BlocksModel::setNumberBlockValue
+ * Set block with <i>index</i> value when it is a number block
+ * \param index
+ * \param value
+ */
+void BlocksModel::setNumberBlockValue(const int index, const QString &value)
+{
+    if(index >= 0 && index < m_blocks.size() && canModifyValue(m_blocks[index])) {
+        m_blocks[index].setValue(value);
+        emit dataChanged(this->index(index), this->index(index), {ValueRole});
     }
 }
 

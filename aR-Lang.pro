@@ -30,6 +30,7 @@ HEADERS += \
     source/files/filereader.h \
     source/files/filesmanager.h \
     source/files/filewriter.h \
+    source/files/savedfile.h \
     source/guiengine.h \
     source/models/blocks/addblocksmodel.h \
     source/models/blocks/blocksbasemodel.h \

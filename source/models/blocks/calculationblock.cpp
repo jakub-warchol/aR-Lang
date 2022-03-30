@@ -90,6 +90,21 @@ CalculationBlock::Type CalculationBlock::type() const
 void CalculationBlock::setType(const Type &type)
 {
     m_type = type;
+    m_value = valueMapper.value(type);
+
+    if(type == Number) {
+        m_inputCount = 0;
+    } else if(type == Result) {
+        m_inputCount = 1;
+    } else {
+        m_inputCount = 2;
+    }
+
+    m_sourceBlocksIdx.resize(m_inputCount);
+    m_sourceBlocksIdx.fill(-1);
+
+    m_isDestination = type != Number;
+    m_isSource      = type != Result;
 }
 
 /*!

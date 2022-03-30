@@ -16,6 +16,8 @@ Rectangle {
     property alias readOnly: valueLbl.readOnly
     property alias inputCount: blocksIn.inputCount
     property alias hasOutput: blockOut.visible
+    property alias inputBlocks: blocksIn
+    property alias outputBlock: blockOut
     property bool selected: false
     property int blockIdx: -1
     property int minimumXDrag: 0

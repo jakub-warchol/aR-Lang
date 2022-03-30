@@ -35,6 +35,12 @@ public:
     Q_INVOKABLE void detachBlocks(const int sourceBlockIdx, const int targetBlockIdx);
 
     void deselectAllBlocks();
+    void clearModel();
+    void refreshModel();
+    void setNumberBlockValue(const int index, const QString &value);
+
+signals:
+    void blocksFromFileAttached(int sourceBlock, int targetBlock, int targetInput); ///< Signal is emmited when attaching between blocks will be detected during loading file
 
 protected:
     virtual bool canModifyValue(const CalculationBlock &block) const override;        

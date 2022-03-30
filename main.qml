@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Window 2.15
+import QtQuick.Dialogs 1.2
 import GuiStyle 1.0
 
 import "qrc:/gui/components/menu/"
@@ -15,7 +16,7 @@ ApplicationWindow {
     minimumWidth: 800
     minimumHeight: 600
     visible: true
-    title: qsTr("aR-Lang")
+    title: Qt.application.name
 
     function openAddBlocksWindow() {
         if(mainWindow.addBlocksWindow === null) {
@@ -38,5 +39,28 @@ ApplicationWindow {
 
     AppWindowContent {
         anchors.fill: parent
+    }
+
+    MessageDialog {
+        id: messageDialog
+        visible: false
+    }
+
+    Connections {
+        target: guiEngine.filesManager
+
+        function onLoadSuccess(file, creator, date) {
+            messageDialog.icon  = StandardIcon.Information
+            messageDialog.title = qsTr("Load file successful")
+            messageDialog.text  = qsTr("File %1 was successfully loaded.\nCreator:\t\t%2\nLast modified:\t%3").arg(file).arg(creator).arg(date)
+            messageDialog.visible = true
+        }
+
+        function onError(file, error) {
+            messageDialog.icon  = StandardIcon.Critical
+            messageDialog.title = qsTr("Load file failed")
+            messageDialog.text  = qsTr("Error occured during loading file %1:\n%2").arg(file).arg(error)
+            messageDialog.visible = true
+        }
     }
 }

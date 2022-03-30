@@ -51,7 +51,7 @@ Item {
         }
 
         Rectangle {
-            id: logsRct // TODO: add ListView
+            id: logsRct
             Layout.fillWidth: true
             Layout.fillHeight: true
             color: GuiStyle.color5
