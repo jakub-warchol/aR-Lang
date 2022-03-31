@@ -17,5 +17,6 @@
         <file>gui/components/blocks/IOShape/ConnectionLine.qml</file>
         <file>gui/components/errors/ErrorsList.qml</file>
         <file>gui/windows/add_blocks_window/AddBlocksWindow.qml</file>
+        <file>gui/windows/about_app/AboutApplication.qml</file>
     </qresource>
 </RCC>

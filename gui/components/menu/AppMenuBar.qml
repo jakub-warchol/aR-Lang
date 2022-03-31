@@ -70,6 +70,9 @@ MenuBar {
 
         Action {
             text: qsTr("Application")
+            onTriggered: {
+                aboutApp.open()
+            }
         }
 
         Action {

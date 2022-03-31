@@ -7,6 +7,7 @@ import GuiStyle 1.0
 import "qrc:/gui/components/menu/"
 import "qrc:/gui/components/toolbar/"
 import "qrc:/gui/window_content/"
+import "qrc:/gui/windows/about_app"
 
 ApplicationWindow {
     id: mainWindow
@@ -39,6 +40,19 @@ ApplicationWindow {
 
     AppWindowContent {
         anchors.fill: parent
+    }
+
+    AboutApplication {
+        id: aboutApp
+        parent: Overlay.overlay
+        visible: false
+        modal: true
+        closePolicy: AboutApplication.CloseOnEscape | AboutApplication.CloseOnPressOutsideParent
+
+        x: Math.round((parent.width - width) / 2)
+        y: Math.round((parent.height - height) / 2)
+        width: 400
+        height: 400
     }
 
     MessageDialog {
