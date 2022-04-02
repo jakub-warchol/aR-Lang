@@ -1,0 +1,16 @@
+1. Build app in Release mode
+2. Download https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage and copy to the directory above the build and source.
+3. To build release directory, copy application's icon and .desktop file:
+[Desktop Entry]
+Type=Application
+Name=aR-Lang
+Comment=Create beatiful chains of arithmetic calculations
+Icon=aR-Lang
+Categories=Science;
+X-AppImage-Version=
+
+4. In the release directory, open terminal.
+5. In the terminal, execute: export PATH=/path/to//Qt/version/gcc_64/bin/:$PATH
+6. Now, ../linuxdeployqt-continuous-x86_64.AppImage ./aR-Lang -qmldir=../aR-Lang/gui/ (this operations may take a while, be patient).
+7. Execute: ../linuxdeployqt-continuous-x86_64.AppImage ./aR-Lang -qmldir=../aR-Lang/gui/
+8. Voila. The Appimage file has been created!

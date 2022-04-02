@@ -15,7 +15,7 @@ MenuBar {
         FileDialog {
             id: selectFile
             visible: false
-            nameFilters: ["*.arfile"]
+            nameFilters: ["aR-Lang(*.arfile)"]
             folder: shortcuts.home
             sidebarVisible: true
 

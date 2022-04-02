@@ -17,6 +17,7 @@ int main(int argc, char *argv[])
     QScopedPointer<GuiEngine> guiEngine{new GuiEngine};
 
     app.setApplicationName("aR-Lang");
+    app.setApplicationVersion("1.0.0");
     app.setWindowIcon(QIcon(":/resources/icons/logo.png"));
 
     // set supersampling

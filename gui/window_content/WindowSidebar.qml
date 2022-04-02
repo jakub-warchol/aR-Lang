@@ -34,6 +34,18 @@ Item {
                     resultTf.text = Number(result).toFixed(6) * 1 // * 1 to remove unsignificant 0s
                 }
             }
+
+            Connections {
+                target: guiEngine.filesManager
+
+                function onLoadSuccess(file, creator, date) {
+                    resultTf.clear()
+                }
+
+                function onError(file, error) {
+                    resultTf.clear()
+                }
+            }
         }
 
         Rectangle {

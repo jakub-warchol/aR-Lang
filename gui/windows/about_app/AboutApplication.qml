@@ -30,7 +30,7 @@ Popup {
 
             Text {
                 width: parent.width
-                text: qsTr("<b>aR-Lang</b>")
+                text: qsTr("<b>aR-Lang %1</b>").arg(Qt.application.version)
             }
 
             Text {

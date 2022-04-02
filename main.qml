@@ -47,7 +47,7 @@ ApplicationWindow {
         parent: Overlay.overlay
         visible: false
         modal: true
-        closePolicy: AboutApplication.CloseOnEscape | AboutApplication.CloseOnPressOutsideParent
+        closePolicy: AboutApplication.CloseOnEscape | AboutApplication.CloseOnPressOutside
 
         x: Math.round((parent.width - width) / 2)
         y: Math.round((parent.height - height) / 2)
