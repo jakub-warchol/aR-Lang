@@ -20,6 +20,7 @@ Rectangle {
     }
 
     Repeater {
+        id: blocksRepeater
         anchors.fill: parent
         model: guiEngine.blocksModel
         delegate: ScopeBlock {
@@ -105,6 +106,21 @@ Rectangle {
                     const type  = drop.getDataAsString(formats[1])
                     const point = mapToItem(root, drop.x, drop.y)
                     guiEngine.blocksModel.addBlock(type, point.x / root.width, point.y / root.height)
+                }
+            }
+        }
+    }
+
+    Connections {
+        target: blocksRepeater.model
+        function onBlocksFromFileAttached(source, target, targetInput) {
+            const sourceBlock = blocksRepeater.itemAt(source)
+            const targetBlock = blocksRepeater.itemAt(target)
+            if(sourceBlock !== null && targetBlock !== null) {
+                const input  = targetBlock.inputBlocks.blocksRepeater.itemAt(targetInput)
+                const output = sourceBlock.outputBlock
+                if(input !== null && output !== null) {
+                    input.attachToBlockOut(output, targetInput)
                 }
             }
         }

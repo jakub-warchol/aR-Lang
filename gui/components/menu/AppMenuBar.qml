@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Window 2.15
+import QtQuick.Dialogs 1.3
 import GuiStyle 1.0
 
 import "qrc:/"
@@ -11,17 +12,46 @@ MenuBar {
     AppMenu {
         title: qsTr("File")
 
+        FileDialog {
+            id: selectFile
+            visible: false
+            nameFilters: ["*.arfile"]
+            folder: shortcuts.home
+            sidebarVisible: true
+
+            function loadFile() {
+                selectExisting = true
+                title = qsTr("Load file...")
+                visible = true
+            }
+
+            function saveFile() {
+                selectExisting = false
+                title = qsTr("Save file...")
+                visible = true
+            }
+
+            onAccepted: {
+                const filePath = String(fileUrl).replace("file://", "")
+                if(selectExisting) {
+                    guiEngine.loadFromFile(filePath)
+                } else {
+                    guiEngine.saveToFile(filePath)
+                }
+            }
+        }
+
         Action {
             text: qsTr("Open file...")
             onTriggered: {
-
+                selectFile.loadFile()
             }
         }
 
         Action {
             text: qsTr("Save file...")
             onTriggered: {
-
+                selectFile.saveFile()
             }
         }
 
@@ -40,6 +70,9 @@ MenuBar {
 
         Action {
             text: qsTr("Application")
+            onTriggered: {
+                aboutApp.open()
+            }
         }
 
         Action {

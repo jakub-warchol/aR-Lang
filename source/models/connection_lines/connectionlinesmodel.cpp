@@ -75,6 +75,7 @@ void ConnectionLinesModel::removeSelectedLines()
 {
     for(auto &line : m_selectedLines) {
         if(auto selectedLineIdx = lineInSelectedModelIndex(line); selectedLineIdx > -1) {
+            qDebug() << "remove line:" << line << selectedLineIdx;
             m_selectedLines.removeAt(selectedLineIdx);
             QMetaObject::invokeMethod(line, "lineRemoved", Qt::DirectConnection);
         }

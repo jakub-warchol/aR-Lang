@@ -7,10 +7,10 @@
 #include "models/blocks/selectedblocksmodel.h"
 #include "models/errors/errormodel.h"
 #include "models/connection_lines/connectionlinesmodel.h"
+#include "source/files/filesmanager.h"
 
 class CalculationEngine;
 class ExpressionGenerator;
-class FilesManager;
 /*!
  * \brief The GuiEngine class
  * Provide a bridge to communication between C++ and QML.
@@ -23,6 +23,7 @@ class GuiEngine : public QObject
     Q_PROPERTY(SelectedBlocksModel* selectedBlocksModel READ selectedBlocksModel CONSTANT)
     Q_PROPERTY(ErrorModel* errorsModel READ errorsModel CONSTANT)
     Q_PROPERTY(ConnectionLinesModel* connectionLinesModel READ connectionLinesModel CONSTANT)
+    Q_PROPERTY(FilesManager* filesManager READ filesManager CONSTANT)
 public:
     explicit GuiEngine(QObject *parent = nullptr);
 
@@ -30,6 +31,7 @@ public:
     SelectedBlocksModel* selectedBlocksModel() const;
     ErrorModel* errorsModel() const;
     ConnectionLinesModel* connectionLinesModel() const;
+    FilesManager* filesManager() const;
 
     Q_INVOKABLE void aboutQt();
     Q_INVOKABLE void startCalculation();
@@ -47,10 +49,10 @@ private:
     SelectedBlocksModel* m_selectedBlocksModel;     ///< Instance of SelectedBlocksModel
     ErrorModel* m_errorsModel;                      ///< Intance of ErrorModel
     ConnectionLinesModel* m_connectionLinesModel;   ///< Instance of ConnectionLinesModel
+    FilesManager* m_filesManager;                   ///< Instance of FilesManager
 
     CalculationEngine* m_calculationEngine;         ///< Instance of CalculationEngine
     ExpressionGenerator* m_expressionGenerator;     ///< Instance of ExpressionGenerator
-    FilesManager* m_filesManager;                   ///< Instance of FilesManager
 };
 
 #endif // GUIENGINE_H

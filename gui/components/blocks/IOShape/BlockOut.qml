@@ -21,7 +21,7 @@ TriangleShape {
     }
 
     function detachFromTarget() {
-        guiEngine.blocksModel.detachBlocks(root.parent.blockIdx, root.targetInput.parent.parent.blockIdx, root.connectionIdx)
+        guiEngine.blocksModel.detachBlocks(root.parent.blockIdx, root.targetInput.parent.parent.blockIdx)
 
         root.x           = Qt.binding(() => root.parent.width)
         root.y           = Qt.binding(() => (root.parent.height - root.height) * 0.5)

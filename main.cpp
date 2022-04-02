@@ -2,6 +2,7 @@
 #include <QSurfaceFormat>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include <QIcon>
 
 #include "source/guiengine.h"
 #include "source/models/blocks/addblocksmodel.h"
@@ -14,6 +15,9 @@ int main(int argc, char *argv[])
 
     QApplication app(argc, argv);
     QScopedPointer<GuiEngine> guiEngine{new GuiEngine};
+
+    app.setApplicationName("aR-Lang");
+    app.setWindowIcon(QIcon(":/resources/icons/logo.png"));
 
     // set supersampling
     QSurfaceFormat supersamplingFormat;

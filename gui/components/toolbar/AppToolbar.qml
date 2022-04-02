@@ -33,8 +33,6 @@ ToolBar {
             onClicked: {
                 guiEngine.connectionLinesModel.removeSelectedLines()
                 guiEngine.blocksModel.removeSelectedBlocks()
-
-                //TODO: check why all lines have been gone
             }
         }
 
