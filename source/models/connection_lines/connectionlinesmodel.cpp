@@ -73,12 +73,9 @@ void ConnectionLinesModel::removeLine(QQuickItem *line)
  */
 void ConnectionLinesModel::removeSelectedLines()
 {
-    for(auto &line : m_selectedLines) {
-        if(auto selectedLineIdx = lineInSelectedModelIndex(line); selectedLineIdx > -1) {
-            qDebug() << "remove line:" << line << selectedLineIdx;
-            m_selectedLines.removeAt(selectedLineIdx);
-            QMetaObject::invokeMethod(line, "lineRemoved", Qt::DirectConnection);
-        }
+    while(!m_selectedLines.isEmpty()) {
+        const auto &line = m_selectedLines.takeFirst();
+        QMetaObject::invokeMethod(line, "lineRemoved", Qt::DirectConnection);
     }
 
     emit selectedLinesCountChanged(m_selectedLines.size());

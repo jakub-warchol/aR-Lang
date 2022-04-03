@@ -125,14 +125,19 @@ void BlocksModel::duplicateSelectedBlocks()
  */
 void BlocksModel::removeSelectedBlocks()
 {
-    beginResetModel();
+    bool needsReset = false;
     for(int i = 0; i < m_blocks.size(); i++) {
         if(m_blocks.at(i).selected()) {
             m_blocks.removeAt(i);
             i--;
+            needsReset = true;
         }
     }
-    endResetModel();
+
+    if(needsReset) {
+        beginResetModel();
+        endResetModel();
+    }
 }
 
 /*!

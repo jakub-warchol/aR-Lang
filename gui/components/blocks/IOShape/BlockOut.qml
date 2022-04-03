@@ -22,12 +22,13 @@ TriangleShape {
 
     function detachFromTarget() {
         guiEngine.blocksModel.detachBlocks(root.parent.blockIdx, root.targetInput.parent.parent.blockIdx)
+        root.targetInput.connectedToBlock = false
 
         root.x           = Qt.binding(() => root.parent.width)
         root.y           = Qt.binding(() => (root.parent.height - root.height) * 0.5)
         root.targetInput = null
         root.canMove     = true
-        inner.outputClicked = !inner.outputClicked
+        inner.outputClicked = false
     }
 
     Drag.active: dragArea.drag.active
