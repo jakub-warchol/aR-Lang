@@ -23,8 +23,8 @@ ApplicationWindow {
         if(mainWindow.addBlocksWindow === null) {
             const addBlocksComponent    = Qt.createComponent("qrc:/gui/windows/add_blocks_window/AddBlocksWindow.qml")
             mainWindow.addBlocksWindow  = addBlocksComponent.createObject(mainWindow, {
-                                                                              width: mainWindow.width * 0.2,
-                                                                              height: mainWindow.height * 0.4,
+                                                                              width: Math.max(mainWindow.width * 0.2, 400),
+                                                                              height: Math.max(mainWindow.height * 0.4, 400),
                                                                               x: mainWindow.width * 0.2,
                                                                               y: mainWindow.height * 0.2,
                                                                           })
