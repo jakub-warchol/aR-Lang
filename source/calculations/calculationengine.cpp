@@ -9,19 +9,15 @@ static int operatorRank(QChar input){
     case '+':
         rank = 1;
         break;
-
     case '-':
         rank = 1;
         break;
-
     case '*':
         rank = 2;
         break;
-
     case '/':
         rank = 2;
         break;
-
     case '^':
         rank = 3;
         break;
@@ -31,19 +27,28 @@ static int operatorRank(QChar input){
 }
 
 static double operation(double a, double b, QChar op){
-    //Perform operation
-    if(op == '+')
+
+    switch (op.toLatin1()){
+    case '+':
         return a + b;
-    else if(op == '-')
+        break;
+    case '-':
         return a - b;
-    else if(op == '*')
+        break;
+    case '*':
         return a * b;
-    else if(op == '/')
+        break;
+    case '/':
         return a / b;
-    else if(op == '^')
-        return qPow(a,b); //find b^a
-    else
-        return INT_MIN; //return negative infinity
+        break;
+    case '^':
+        return qPow(a,b);
+        break;
+    default:
+        return INT_MIN;
+        break;
+    }
+
 }
 
 /*!
@@ -87,7 +92,7 @@ void CalculationEngine::parseCalculationExpression(const QString &expression)
             }else{
 
                 while (true){
-                    if (symbol == '^'){ //prawostronna operacja
+                    if (symbol == '^'){
                         if (operatorRank(symbol) < operatorRank(symbols.back())){
                             symbolsStack.append(symbols.back());
                             symbols.chop(1);
@@ -97,7 +102,7 @@ void CalculationEngine::parseCalculationExpression(const QString &expression)
                         }
                     }else{
                         if (operatorRank(symbol) <= operatorRank(symbols.back())){
-                            symbolsStack.append(symbols.back()); //front i back
+                            symbolsStack.append(symbols.back());
                             symbols.chop(1);
                             symbolsStack.append(" ");
                         }else{
