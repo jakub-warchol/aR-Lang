@@ -25,6 +25,12 @@ ToolBar {
             onClicked: {
                 guiEngine.blocksModel.duplicateSelectedBlocks()
             }
+            Shortcut {
+                sequences: ["D"]
+                onActivated: {
+                    guiEngine.blocksModel.duplicateSelectedBlocks()
+                }
+            }
         }
 
         AppToolButton {
@@ -34,12 +40,25 @@ ToolBar {
                 guiEngine.connectionLinesModel.removeSelectedLines()
                 guiEngine.blocksModel.removeSelectedBlocks()
             }
+            Shortcut {
+                sequences: [StandardKey.Delete, "X"]
+                onActivated: {
+                    guiEngine.connectionLinesModel.removeSelectedLines()
+                    guiEngine.blocksModel.removeSelectedBlocks()
+                }
+            }
         }
 
         AppToolButton {
             icon.source: "qrc:/resources/icons/add.png"
             onClicked: {
                 mainWindow.openAddBlocksWindow()
+            }
+            Shortcut {
+                sequences: ["A"]
+                onActivated: {
+                    mainWindow.openAddBlocksWindow()
+                }
             }
         }
 
@@ -56,6 +75,12 @@ ToolBar {
             icon.source: "qrc:/resources/icons/play.png"
             onClicked: {
                 guiEngine.startCalculation()
+            }
+            Shortcut {
+                sequences: ["S"]
+                onActivated: {
+                    guiEngine.startCalculation()
+                }
             }
         }
     }
